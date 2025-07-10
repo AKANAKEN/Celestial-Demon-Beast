@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vigenère Cipher</title>
+    <script src="js/vigenere.js" defer></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
+        input, button, textarea { margin: 10px; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h2>Vigenère Cipher</h2>
+    <label for="text">Masukkan Teks:</label><br>
+    <textarea id="text" rows="4" cols="50"></textarea><br>
+    
+    <label for="key">Masukkan Kunci:</label><br>
+    <input type="text" id="key"><br>
+
+    <button onclick="encryptText()">Enkripsi</button>
+    <button onclick="decryptText()">Dekripsi</button>
+
+    <h3>Hasil:</h3>
+    <textarea id="result" rows="4" cols="50" readonly></textarea>
+</body>
+</html>

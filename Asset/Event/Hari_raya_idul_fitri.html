@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Lebaran</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap">
+    <!-- <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <style>
+        body {
+            background: radial-gradient(circle, #001f3f, #000a1f);
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            /* background: radial-gradient(circle, #004d00, #002600); */
+            color: #ffeb77;
+            position: relative;
+        }
+ 
+        .countdown {
+            font-size: 3em;
+            margin-top: 20vh;
+            text-shadow: 3px 3px 10px rgba(255, 255, 255, 0.5);
+        }
+        .firework {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0;
+            animation: explode 1.5s ease-out;
+        }
+        @keyframes explode {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(4); opacity: 0.7; }
+            100% { transform: scale(8); opacity: 0; }
+        }
+        .lebaran-text {
+            font-size: 4em;
+            font-weight: bold;
+            text-transform: uppercase;
+            background: #FFD700;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 1.5s infinite alternate;
+        }
+        @keyframes glow {
+            0% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+            100% { text-shadow: 0 0 20px rgba(255, 255, 255, 1); }
+        }
+
+        .link-button {
+    display: inline-block;
+    padding: 12px 25px;
+    font-size: 1.3em;
+    font-weight: bold;
+    color: white; /* Pastikan warna teks putih */
+    background-color:#008000; /* Latar belakang biru tua */
+    border-radius: 8px;
+    text-decoration: none;
+    border: 2px solid white; /* Outline putih */
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.3);
+    transition: 0.3s ease-in-out;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.5); /* Sedikit bayangan hitam untuk kontras */
+}
+
+.link-button:hover {
+    background-color: #ffcc00; /* Warna latar saat hover */
+    color:#008000; /* Warna teks tetap kontras */
+    border: 2px solid#008000;
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(255, 255, 255, 0.5);
+}
+
+p {
+    color: #f0f0f0; /* Warna putih lembut */
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5); /* Bayangan hitam halus */
+    font-size: 40px; /* Ukuran tetap 20px */
+    line-height: 1.5; /* Jarak antar baris agar lebih rapi */
+    max-width: 90%; /* Agar teks tidak terlalu melebar */
+    margin: auto; /* Pusatkan teks */
+}
+h6 {
+    color: #f0f0f0; /* Warna putih lembut */
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5); /* Bayangan hitam halus */
+    font-size: 30px; /* Ukuran tetap 20px */
+    line-height: 1.5; /* Jarak antar baris agar lebih rapi */
+    max-width: 90%; /* Agar teks tidak terlalu melebar */
+    margin: auto; /* Pusatkan teks */
+}
+
+
+@media (max-width: 768px) { /* Tablet dan HP besar */
+    .countdown {
+        font-size: 2em;
+    }
+    .lebaran-text {
+        font-size: 3em;
+    }
+    .link-button {
+        font-size: 1.1em;
+        padding: 10px 20px;
+    }
+}
+
+@media (max-width: 480px) { /* HP kecil */
+    .countdown {
+        font-size: 1.5em;
+    }
+    .lebaran-text {
+        font-size: 2.5em;
+    }
+    .link-button {
+        font-size: 1em;
+        padding: 8px 16px;
+    }
+}
+
+.link-button {
+            display: inline-block;
+            padding: 12px 25px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: white;
+            background-color:#008000;
+            border-radius: 8px;
+            text-decoration: none;
+            border: 2px solid white;
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.3);
+            transition: 0.3s;
+        }
+        .link-button:hover {
+            background-color: #ffcc00;
+            color:#008000;
+            border: 2px solid#008000;
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(255, 255, 255, 0.5);
+        }
+        .count-text {
+            font-size: 20px;
+            margin-top: 10px;
+            color: #ffcc00;
+        }
+
+
+    </style>
+</head>
+<body>
+    <!-- <h1>Countdown Menuju Lebaran!</h1> -->
+    <div class="countdown" id="countdown"></div>
+    <div id="lebaranText" class="lebaran-text" style="display: none;">
+       <p>Minal ‘Aidin wal Faizin, mohon maaf lahir dan batin.</p>
+       <h6>Untuk seluruh member Komunitas CDB, selamat merayakan Idul Fitri! Tetap semangat dan terus berkarya bersama!</h6>
+       <h6>Bagi yang sedang dalam perjalanan mudik, semoga diberikan kelancaran, keselamatan, dan bisa berkumpul dengan keluarga tercinta.</h6>
+
+       
+       <a href="https://link.dana.id/danakaget?c=s55cbztkn&r=ce5Fg7&orderId=20250330101214104715010300166998815368529"  target="_blank" class="link-button">THR DANA</a>
+       <p id="counterText" class="count-text">Hanya bisa didapatkan oleh 5 orang yang beruntung</p>
+    
+    </div>
+    
+    <audio id="fireworkSound" src="fireworks-107116.mp3" preload="auto"></audio>
+    
+    <script>
+        let hasPlayedSound = false;
+        
+        function updateCountdown() {
+            const targetDate = new Date('Maret 31, 2025 00:00:00').getTime();
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+            
+            if (difference < 0) {
+                document.getElementById("countdown").style.display = "none";
+                document.getElementById("lebaranText").style.display = "block";
+                if (!hasPlayedSound) {
+                    playFireworkSound();
+                    hasPlayedSound = true;
+                }
+                setInterval(createIntenseFirework, 1000);
+                return;
+            }
+            
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+            
+            document.getElementById("countdown").innerHTML = `${days} : ${hours} : ${minutes} : ${seconds}  
+            <br> Menuju Hari Raya Idul Fitri`;
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+        
+        function playFireworkSound() {
+            const sound = document.getElementById("fireworkSound");
+            sound.play();
+        }
+        
+        function createFirework() {
+            for (let i = 0; i < 2; i++) {
+                const firework = document.createElement("div");
+                firework.classList.add("firework");
+                document.body.appendChild(firework);
+                
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight;
+                const color = `hsl(${Math.random() * 360}, 100%, 70%)`;
+                
+                firework.style.left = `${x}px`;
+                firework.style.top = `${y}px`;
+                firework.style.backgroundColor = color;
+                
+                setTimeout(() => { firework.remove(); }, 1500);
+            }
+        }
+        setInterval(createFirework, 2000);
+        
+        function createIntenseFirework() {
+            for (let i = 0; i < 5; i++) {
+                const firework = document.createElement("div");
+                firework.classList.add("firework");
+                document.body.appendChild(firework);
+                
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight;
+                const color = `hsl(${Math.random() * 360}, 100%, 70%)`;
+                
+                firework.style.left = `${x}px`;
+                firework.style.top = `${y}px`;
+                firework.style.backgroundColor = color;
+                
+                setTimeout(() => { firework.remove(); }, 1500);
+            }
+        }
+    </script>
+</body>
+</html>

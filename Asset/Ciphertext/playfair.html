@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playfair Cipher</title>
+    <script src="js/playfair.js" defer></script>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f5f5f5; text-align: center; padding: 20px; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); }
+        input, textarea, button { width: 90%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+        button { background-color: #fa7014; color: white; border: none; cursor: pointer; font-size: 16px; }
+        button:hover { background-color: #c25004; }
+        .radio-group { display: flex; justify-content: center; gap: 10px; margin: 10px 0; }
+        .result { font-size: 18px; font-weight: bold; color: #333; margin-top: 10px; }
+        .matrix { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; justify-content: center; margin-top: 20px; }
+        .matrix div { padding: 10px; background-color: #ddd; border-radius: 4px; font-size: 18px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Playfair Cipher</h2>
+        <label for="text">Masukkan Teks:</label><br>
+        <textarea id="text" rows="4" cols="50"></textarea><br>
+        <label for="key">Masukkan Kunci:</label><br>
+        <input type="text" id="key" oninput="updateMatrix()"><br>
+        <div class="radio-group">
+            <button onclick="encryptText()">Enkripsi</button>
+            <button onclick="decryptText()">Dekripsi</button>
+        </div>
+        <h3>Hasil:</h3>
+        <textarea id="result" rows="4" cols="50" readonly></textarea>
+        <h3>Playfair Square:</h3>
+        <div id="matrix" class="matrix"></div>
+    </div>
+</body>
+</html>

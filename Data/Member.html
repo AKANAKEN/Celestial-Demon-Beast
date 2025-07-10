@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Member</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+    }
+    .card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 16px;
+      max-width: 400px;
+      margin: 0 auto;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: left;
+    }
+    .card img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+    .card a {
+      color: #007BFF;
+      text-decoration: none;
+    }
+    .card a:hover {
+      text-decoration: underline;
+    }
+    button {
+      margin: 5px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+    }
+    button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <h1>Data Member</h1>
+  <div class="card" id="data-card">
+    <!-- <img id="profile-img" src="#" alt="Profile Image" /> -->
+    <p id="name">Loading...</p>
+    <p id="nickname"></p>
+    <p id="age"></p>
+    <p id="hobby"></p>
+    <p id="skill"></p>
+    <p id="country"></p>
+    <p>
+      <strong>Social Links:</strong><br>
+      <a id="instagram" href="#" target="_blank">Instagram</a> | 
+      <a id="twitter" href="#" target="_blank">Twitter</a> | 
+      <a id="youtube" href="#" target="_blank">YouTube</a>
+    </p>
+  </div>
+  <div>
+    <button id="prev-btn" disabled>Previous</button>
+    <button id="next-btn">Next</button>
+  </div>
+
+  <script>
+    const apiUrl = "https://api.sheety.co/4f50258db672da74f73e09f356a9384f/introduction%20(jawaban)/member";
+    let data = [];
+    let currentIndex = 0;
+
+    async function fetchData() {
+      try {
+        const response = await fetch(apiUrl);
+        
+        // Cek status HTTP
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status} - ${response.statusText}`);
+        }
+        
+        const result = await response.json();
+        
+        // Periksa data
+        if (result.member && result.member.length > 0) {
+          data = result.member;
+          displayData(0);
+        } else {
+          document.getElementById("name").innerText = "No data found.";
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        document.getElementById("name").innerText = "Error loading data.";
+      }
+    }
+
+    function displayData(index) {
+      const card = data[index];
+      const profileImg = card["uploadLinkCharakter/profile"] || "https://via.placeholder.com/400x300";
+    //   document.getElementById("profile-img").src = profileImg;
+      document.getElementById("name").innerText = `Username: ${card.username}`;
+      document.getElementById("nickname").innerText = `Nickname: ${card.nickame}`;
+      document.getElementById("age").innerText = `Age: ${card["age [umur]"]}`;
+      document.getElementById("hobby").innerText = `Hobby: ${card.hobby}`;
+      document.getElementById("skill").innerText = `Skill: ${card.skill}`;
+      document.getElementById("country").innerText = `Country: ${card.country || "N/A"}`;
+      document.getElementById("instagram").href = card.linkInstagram ? `https://www.instagram.com/${card.linkInstagram}` : "#";
+      document.getElementById("twitter").href = card.linkTwitter || "#";
+      document.getElementById("youtube").href = card.channelYoutube || "#";
+      updateButtons();
+    }
+
+    function updateButtons() {
+      document.getElementById("prev-btn").disabled = currentIndex === 0;
+      document.getElementById("next-btn").disabled = currentIndex === data.length - 1;
+    }
+
+    document.getElementById("prev-btn").addEventListener("click", () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        displayData(currentIndex);
+      }
+    });
+
+    document.getElementById("next-btn").addEventListener("click", () => {
+      if (currentIndex < data.length - 1) {
+        currentIndex++;
+        displayData(currentIndex);
+      }
+    });
+
+    fetchData();
+  </script>
+</body>
+</html>

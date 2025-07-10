@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <title>Feature CDB</title>
+    <link rel="icon" type="image/png" href="Asset/Logo [Dasar].png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="Asset/Proses.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        #panduanModal1 .modal-dialog {
+    max-width: 50%;
+}
+
+    </style>
+</head>
+
+  <body onload="loadNavbar()">
+  
+    <!-- Placeholder for Navbar -->
+    <div id="navbar-placeholder"></div><br><br>
+    <script type="module" src="Asset/load_navbar.js"></script>
+  
+   
+  
+
+
+
+<div class="w3-container w3-center w3-dark-grey" style="padding:128px 16px" id="pricing">
+    <h3>Fitur yang kita buat menggunakan website ini</h3>
+    <p class="w3-large">let's use the features we created</p>
+    
+    <div class="w3-row-padding" style="margin-top:64px">
+      <div class="w3-third w3-section">
+    
+        <ul class="w3-ul w3-white w3-hover-shadow">
+          <li class="w3-black w3-xlarge w3-padding-32">IP Calculate Subnet</li>
+          <li class="w3-padding-16"><b>Deskripsi</b><br> Kalkulator untuk menghitung IP</li>
+          <li class="w3-padding-16"><b>Dibuat Oleh </b><br> Akanaken</li>
+          <li class="w3-light-grey w3-padding-24">
+            <!-- <button class="w3-button w3-black w3-padding-large" data-bs-toggle="modal" data-bs-target="#panduanModal1">Panduan</button> -->
+            <!-- <a href="#"><button class="w3-button w3-black w3-padding-large">  Play </button></a> -->
+            <button class="w3-button w3-black w3-margin-top" onclick="document.getElementById('subnetModal').style.display='block'">Play</button>
+    
+            <div id="subnetModal" class="w3-modal">
+                <div class="w3-modal-content w3-animate-top w3-card-4" style="max-width: 600px;">
+                    <header class="w3-container w3-black">
+                        <span onclick="document.getElementById('subnetModal').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                        <h2>Subnet Calculator</h2>
+                    </header>
+                    <div class="w3-container w3-padding">
+                        <label>IP Address: <input type="text" id="ip" class="w3-input w3-border" value="192.168.1.10"></label>
+                        <label>Subnet Mask: <input type="number" id="mask" class="w3-input w3-border" value="24" min="1" max="30"></label>
+                        <button class="w3-button w3-black w3-border" onclick="calculateSubnet()">Hitung</button>
+                        <table class="w3-table w3-bordered w3-white w3-margin-top">
+                            <tr><th>Parameter</th><th>Nilai</th></tr>
+                            <tr><td>Network</td><td id="network"></td></tr>
+                            <tr><td>Netmask</td><td id="netmask"></td></tr>
+                            <tr><td>Wildcard Mask</td><td id="wildcard"></td></tr>
+                            <tr><td>Broadcast</td><td id="broadcast"></td></tr>
+                            <tr><td>HostMin</td><td id="hostmin"></td></tr>
+                            <tr><td>HostMax</td><td id="hostmax"></td></tr>
+                            <tr><td>Hosts/Net</td><td id="hosts"></td></tr>
+                            <tr><td>Class</td><td id="class"></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <script src="Fitur/ip_cal.js"></script>
+
+          </li>
+        </ul>
+      </div>
+    
+    
+      
+  
+      <div class="w3-third">
+        <ul class="w3-ul w3-white w3-hover-shadow">
+          <li class="w3-red w3-xlarge w3-padding-48">SkewFold</li>
+          <li class="w3-padding-16"><b>Deskripsi</b><br> Web Generator yang digunakan untuk membuat CSS</li>
+          <li class="w3-padding-16"><b>Dibuat Oleh</b><br> Maruマル</li>
+          
+            <span class="w3-opacity"></span>
+          </li>
+          <li class="w3-light-grey w3-padding-24">
+            <button class="w3-button w3-black w3-padding-large" data-bs-toggle="modal" data-bs-target="#panduanModal1">Panduan</button>
+            <!-- <a href="Fitur/Livechat_generator.html"><button class="w3-button w3-black w3-padding-large">  Play </button></a> -->
+            <button class="w3-button w3-black w3-padding-large" onclick="LVC_pop()" >PLay</button>
+    
+              <script>
+                  function LVC_pop() {
+                      window.open('Fitur/Livechat_generator.html', 'PopupWindow', 'width=800,height=600,resizable=yes,scrollbars=yes');
+                  }
+              </script>
+          </li>
+        </ul>
+      </div>
+  
+      
+      <!-- <div class="w3-third w3-section">
+        <ul class="w3-ul w3-white w3-hover-shadow">
+          <li class="w3-black w3-xlarge w3-padding-32">-</li>
+          <li class="w3-padding-16"><b>Deskripsi</b><br> -</li>
+          <li class="w3-padding-16"><b>Dibuat Oleh</b><br> -</li>
+          <li class="w3-light-grey w3-padding-24">
+            <a href="#"><button class="w3-button w3-black w3-padding-large"> Play</button></a>
+          </li>
+        </ul>
+      </div> -->
+      
+
+        <div class="w3-third w3-section">
+      
+          <ul class="w3-ul w3-white w3-hover-shadow">
+            <li class="w3-black w3-xlarge w3-padding-32">QR Code</li>
+            <li class="w3-padding-16"><b>Deskripsi</b><br> Web QR Generator</li>
+            <li class="w3-padding-16"><b>Dibuat Oleh </b><br> Akanaken</li>
+            <li class="w3-light-grey w3-padding-24">
+              <!-- <button class="w3-button w3-black w3-padding-large" data-bs-toggle="modal" data-bs-target="#panduanModal1">Panduan</button> -->
+              <!-- <a href="#"><button class="w3-button w3-black w3-padding-large">  Play </button></a> -->
+              <!-- <button class="w3-button w3-black w3-margin-top" onclick="document.getElementById('subnetModal').style.display='block'">Play</button> -->
+      
+              <button class="w3-button w3-black w3-margin-top" onclick="QR_pop()" >PLay</button>
+    
+              <script>
+                  function QR_pop() {
+                      window.open('Fitur/QR-Code_Generator.html', 'PopupWindow', 'width=800,height=600,resizable=yes,scrollbars=yes');
+                  }
+              </script>
+              
+              <!-- <script src="Fitur/ip_cal.js"></script> -->
+  
+            </li>
+          </ul>
+        </div>
+  
+    </div>
+  </div>
+
+
+<!-- Modal Panduan 1 -->
+<div class="modal fade" id="panduanModal1" tabindex="-1" aria-labelledby="panduanModalLabel1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="panduanModalLabel1">Panduan SkewFold</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <pre>
+            1. Buka SkewFold dengan klik tombol Play
+            2. Tunggu hingga loading selesai
+            3. terdapat 3 menu yaitu
+                menu Chat
+                menu Membership & Gift
+                menu Supa & Sticker
+            4. ubah masing masing bagian tersebut sesuai dengan keinginan sendiri, mulai dari warna hingga ukuran Font
+            5. setelah mengatur warna dan ukuran sesuai dengan keinginan, klik tombol &lt;/&gt; dan copy semua teks css yang 
+                didapatkan hanya dengan klik tombol "COPY".
+            
+
+                </pre>
+            </div>
+            <div class="modal-header">
+                <h5 class="modal-title" id="panduanModalLabel1">Panduan Mengubah Tampilan Live Chat pada OBS Menggunakan CSS</h5>
+
+            </div>
+            <div class="modal-body">
+                <pre>
+               
+    
+                    <h2>1. Menambahkan Live Chat ke OBS</h2>
+                    <p>Sebelum mengubah tampilan dengan CSS, pastikan Anda sudah menambahkan live chat ke OBS dengan cara berikut:</p>
+                    <ol>
+                        <li>Buka OBS Studio.</li>
+                        <li>Klik tombol <code>+</code> di <code>Sources</code> dan pilih <code>Browser</code>.</li>
+                        <li>Masukkan URL live chat dari platform yang digunakan (YouTube, Twitch, dll.).</li>
+                        <li>Atur ukuran sesuai kebutuhan, lalu klik <code>OK</code>.</li>
+                    </ol>
+                    
+                    <h2>2. Menggunakan CSS untuk Mengubah Tampilan Live Chat</h2>
+                    <p>Setelah menambahkan live chat, Anda bisa mengubah tampilannya menggunakan CSS.</p>
+                    
+                    <h3>a. Membuka Pengaturan CSS di OBS</h3>
+                    <ol>
+                        <li>Klik kanan pada sumber <code>Browser</code> yang berisi live chat.</li>
+                        <li>Pilih <code>Properties</code>.</li>
+                        <li>Di bagian bawah, temukan kotak teks untuk <code>Custom CSS</code>.</li>
+                    </ol>
+                    
+                    <h3>b. Menyesuaikan Tampilan Live Chat dengan CSS</h3>
+                    <p>Tempelkan kode CSS yang didapatkan sebelumnya pada Web SkewFold ke dalam kotak <code>Custom CSS</code>:</p>
+                    <p>Berikut Contoh CSS nya</p>
+                    
+                    <pre><code>@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+                        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=M+PLUS+Rounded+1c:wght@100;300;400;500;700;800;900&display=swap');
+                        
+                        :root {
+                          /* chat */
+                          /* owner/streamer */
+                          --font-color-author-name-owner: #4a4355;
+                          --background-author-name-owner: #ffffff;
+                          --font-color-chat-owner: #ffffff;
+                          --background-chat-owner: #F9A825;
+                        
+                        
+                          /* moderator */
+                          --font-color-author-name-moderator: #4a4355;
+                          --background-author-name-moderator: #ffffff;
+                          --font-color-chat-moderator: #ffffff;
+                          --background-chat-moderator: #1D77CA;
+                        
+                          /* member */
+                          --font-color-author-name-member: #ffffff;
+                          --background-author-name-member: #00BF71;
+                          --font-color-chat-member: #4a4355;
+                          --background-chat-member: #ffffff;
+                        
+                          /* viewers */
+                          --font-color-author-name-viewers: #ffffff;
+                          --background-author-name-viewers: #1D77CA;
+                          --font-color-chat-viewers: #4a4355;
+                          --background-chat-viewers: #ffffff;
+                        
+                          /* membership announce */
+                          --font-color-membership: #00BF71;
+                          --font-color-sub-text-membership: #00BF71;
+                          --font-color-other-text-membership: #4a4355;
+                          --font-color-chat-membership: #00BF71;
+                          --background-membership: #ffffff;
+                        }
+                        </code></pre>
+                    
+                    <h3>c. Menerapkan dan Menyesuaikan</h3>
+                    <ol>
+                        <li>Klik <code>OK</code> setelah menempelkan kode CSS.</li>
+                        <li>Cek tampilan di OBS.</li>
+                        <li>Sesuaikan CSS sesuai dengan preferensi.</li>
+                    </ol>
+                    
+                    <h2>3. Tips Tambahan</h2>
+                    <ul>
+                        <li>Jika live chat memiliki elemen berbeda (misalnya YouTube vs Twitch), gunakan <code>Inspect Element</code> di browser untuk menemukan class yang ingin diubah.</li>
+                        <li>Gunakan <code>opacity: 0;</code> jika ingin menyembunyikan elemen tanpa menghapusnya.</li>
+                        <li>Coba berbagai kombinasi warna dan font untuk tampilan yang lebih menarik.</li>
+                    </ul>
+                    
+                    <p>Dengan langkah-langkah ini, Anda bisa menyesuaikan tampilan live chat agar lebih sesuai dengan tema siaran Anda di OBS. Selamat mencoba!</p>
+                
+                
+                    
+                </pre>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!-- Modal Panduan 2 -->
+<div class="modal fade" id="panduanModal2" tabindex="-1" aria-labelledby="panduanModalLabel2" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="panduanModalLabel2">Panduan Aplikasi 2</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Ini adalah panduan penggunaan Aplikasi 2.
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Panduan 3 -->
+<div class="modal fade" id="panduanModal3" tabindex="-1" aria-labelledby="panduanModalLabel3" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="panduanModalLabel3">Panduan Aplikasi 3</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Ini adalah panduan penggunaan Aplikasi 3.
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- <iframe src="Fitur/QR-Code_Generator.html" width="100%" height="60%"></iframe> -->
+
+<footer class="w3-center w3-black w3-padding-64">
+    <a href="#pricing" class="w3-button w3-light-grey"><i class="fa fa-arrow-up w3-margin-right"></i>To the top</a>
+    
+   <p class="w3-small">Website Ini bertujuan untuk Memperkenalkan Apa itu komunitas <b><U> Pemberi Tau Empire</U></b></p>
+  </footer>
+
+</body>
+</html>

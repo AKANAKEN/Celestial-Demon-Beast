@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Form Review</title>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <style>
+    body {
+      font-family: "Raleway", sans-serif;
+      /* background: linear-gradient(135deg, #6e8efb, #a777e3); */
+      background:  black;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+
+    .w3-card {
+      width: 500px;
+      /* max-width: 400px; */
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .w3-input {
+      background: rgba(255, 255, 255, 0.3);
+      border: none;
+      color: white;
+    }
+
+    .w3-input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .rating {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .rating input {
+      display: none;
+    }
+
+    .rating label {
+      font-size: 25px;
+      color: #ddd;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .rating input:checked ~ label,
+    .rating label:hover,
+    .rating label:hover ~ label {
+      color: gold;
+    }
+
+    .w3-button {
+      background-color: grey;
+      transition: all 0.3s ease;
+    }
+
+    .w3-button:hover {
+      background-color: #1e3799;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="w3-container">
+    <div class="w3-card w3-round w3-padding w3-center">
+      <h2 class="w3-text-white">Form Review</h2>
+      <form id="reviewForm">
+        <input type="text" class="w3-input w3-round w3-margin-bottom" id="username" name="username" placeholder="Masukan Username Anda..." required>
+
+        <textarea class="w3-input w3-round w3-margin-bottom" id="review" name="review" rows="4" placeholder="Masukan Review Anda..." required></textarea>
+
+        <input type="email" class="w3-input w3-round w3-margin-bottom" id="email" name="email" placeholder="Masukan Email Anda..." required>
+
+        <div class="w3-margin-bottom">
+          <label class="w3-text-white">Rating:</label>
+          <div class="rating">
+            <input type="radio" id="star5" name="rating" value="Star 5" required>
+            <label for="star5"><i class="fa fa-star"></i></label>
+
+            <input type="radio" id="star4" name="rating" value="Star 4">
+            <label for="star4"><i class="fa fa-star"></i></label>
+
+            <input type="radio" id="star3" name="rating" value="Star 3">
+            <label for="star3"><i class="fa fa-star"></i></label>
+
+            <input type="radio" id="star2" name="rating" value="Star 2">
+            <label for="star2"><i class="fa fa-star"></i></label>
+
+            <input type="radio" id="star1" name="rating" value="Star 1">
+            <label for="star1"><i class="fa fa-star"></i></label>
+          </div>
+        </div>
+
+        <button type="button" class="w3-button w3-round w3-block w3-padding" onclick="submitReview()">Submit</button>
+      </form>
+    </div>
+  </div>
+      
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+   <script src="https://webdevcdb.github.io/API_SERVER_303076/API_test/Form.js"></script>
+  
+  
+  </body>
+</html>

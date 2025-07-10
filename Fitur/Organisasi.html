@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Struktur Organisasi Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            margin-bottom: 30px;
+        }
+        .output {
+            text-align: center;
+        }
+        .organization-chart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        .level {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .node {
+            padding: 10px 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+        .node.ceo {
+            background-color: #ffcccc;
+        }
+        .node.director {
+            background-color: #ffecb3;
+        }
+        .node.manager {
+            background-color: #d9f9d9;
+        }
+        .node.worker {
+            background-color: #e3f2fd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Struktur Organisasi Generator</h1>
+    <form id="organizationForm">
+        <label for="role">Nama Jabatan:</label><br>
+        <input type="text" id="role" name="role" placeholder="Contoh: CEO, Marketing Director" required><br><br>
+
+        <label for="leader">Nama Ketua:</label><br>
+        <input type="text" id="leader" name="leader" placeholder="Nama Ketua" required><br><br>
+
+        <label for="level">Level Jabatan:</label><br>
+        <select id="level" name="level" required>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select><br><br>
+
+        <label for="members">Nama Anggota (pisahkan dengan koma):</label><br>
+        <input type="text" id="members" name="members" placeholder="Anggota" required><br><br>
+
+        <button type="button" onclick="generateStructure()">Tambahkan</button>
+        <button type="button" onclick="clearStructure()">Hapus Semua</button>
+    </form>
+
+    <div class="output" id="output">
+        <h2>Struktur Organisasi</h2>
+        <div class="organization-chart" id="organizationChart"></div>
+    </div>
+
+    <script>
+    const levels = {
+        1: '1',
+        2: '2',
+        3: '3',
+        4: '4',
+        5: '5'
+    };
+
+        function generateStructure() {
+            const role = document.getElementById('role').value;
+            const leader = document.getElementById('leader').value;
+            const level = document.getElementById('level').value;
+            const members = document.getElementById('members').value;
+
+            if (role && leader && level) {
+                const chart = document.getElementById('organizationChart');
+
+                const levelDiv = document.querySelector(`.level-${level}`) || createLevel(level, chart);
+
+                const node = document.createElement('div');
+                node.className = `node ${level}`;
+                node.innerHTML = `<strong>${role}</strong><br>${leader}<br><small>${members}</small>`;
+
+                levelDiv.appendChild(node);
+
+                document.getElementById('organizationForm').reset();
+            } else {
+                alert('Harap mengisi semua field!');
+            }
+        }
+
+        function createLevel(level, chart) {
+            const levelDiv = document.createElement('div');
+            levelDiv.className = `level level-${level}`;
+            chart.appendChild(levelDiv);
+            return levelDiv;
+        }
+
+        function clearStructure() {
+            const chart = document.getElementById('organizationChart');
+            chart.innerHTML = '';
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+

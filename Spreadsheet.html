@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZilkyHandycraft Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 50%;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #6200ea;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            font-size: 24px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">ZilkyHandycraft</div>
+        <div class="form-group">
+            <label for="spreadsheetUrl">Spreadsheet URL</label>
+            <input type="text" id="spreadsheetUrl" placeholder="Enter Spreadsheet URL">
+        </div>
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" readonly>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" readonly>
+        </div>
+        <div class="form-group">
+            <label for="phone">Your Phone</label>
+            <input type="text" id="phone" readonly>
+        </div>
+        <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" rows="4" readonly></textarea>
+        </div>
+        <button onclick="fetchData()">Fetch Data</button>
+    </div>
+
+    <script>
+        function fetchData() {
+            const url = document.getElementById('https://docs.google.com/spreadsheets/d/19ro8cfaX6ZSuSgAul9Eyc1y6tnoZYdhk0RagctxNAZo/edit?usp=sharing').value;
+            const sheetId = url.match(/spreadsheets\/d\/([a-zA-Z0-9-_]+)/)[1];
+            const apiUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Sheet1?key=YOUR_API_KEY`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const rows = data.values;
+                    if (rows.length > 1) {
+                        const form = rows[1]; // Menggunakan data pertama untuk contoh
+                        document.getElementById('name').value = form[1];
+                        document.getElementById('email').value = form[2];
+                        document.getElementById('phone').value = form[3];
+                        document.getElementById('message').value = form[4];
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>

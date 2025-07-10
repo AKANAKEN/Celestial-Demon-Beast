@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Listrik Rumah</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .container { width: 50%; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; }
+        input { width: 100%; padding: 8px; margin: 5px 0; }
+        button { padding: 10px; background: blue; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Kalkulator Listrik Rumah</h2>
+        <label>Watt (W):</label>
+        <input type="number" id="watt" placeholder="Masukkan daya dalam Watt">
+        
+        <label>Ampere (A):</label>
+        <input type="number" id="ampere" placeholder="Masukkan arus dalam Ampere">
+        
+        <label>Volt (V):</label>
+        <input type="number" id="volt" placeholder="Masukkan tegangan dalam Volt">
+        
+        <label>Durasi Pemakaian (jam):</label>
+        <input type="number" id="durasi" placeholder="Masukkan durasi pemakaian">
+        
+        <label>Kapasitas Baterai (Ah, opsional):</label>
+        <input type="number" id="kapasitas" placeholder="Masukkan kapasitas baterai dalam Ah">
+        
+        <label>Tegangan Baterai (V, opsional):</label>
+        <input type="number" id="tegangan_baterai" placeholder="Masukkan tegangan baterai dalam Volt">
+        
+        <button onclick="hitungListrik()">Hitung</button>
+        
+        <h3>Hasil:</h3>
+        <p id="hasil"></p>
+    </div>
+
+    <script>
+        function hitungListrik() {
+            let watt = parseFloat(document.getElementById('watt').value) || 0;
+            let ampere = parseFloat(document.getElementById('ampere').value) || 0;
+            let volt = parseFloat(document.getElementById('volt').value) || 0;
+            let durasi = parseFloat(document.getElementById('durasi').value) || 0;
+            let kapasitas = parseFloat(document.getElementById('kapasitas').value) || 0;
+            let teganganBaterai = parseFloat(document.getElementById('tegangan_baterai').value) || 0;
+            
+            if (!watt && ampere && volt) {
+                watt = ampere * volt;
+            }
+            
+            let konsumsiEnergi = watt * durasi; // dalam Wh
+            let hasilText = `Konsumsi energi: ${konsumsiEnergi.toFixed(2)} Wh`;
+            
+            if (kapasitas > 0 && teganganBaterai > 0) {
+                let kapasitasWh = kapasitas * teganganBaterai;
+                let estimasiPemakaian = kapasitasWh / watt;
+                hasilText += `<br>Estimasi durasi pemakaian baterai: ${estimasiPemakaian.toFixed(2)} jam`;
+            }
+            
+            document.getElementById('hasil').innerHTML = hasilText;
+        }
+    </script>
+</body>
+</html>

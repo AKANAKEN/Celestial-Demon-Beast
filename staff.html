@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Staff</title>
+  <link rel="icon" type="image/png" href="Asset/Logo [Dasar].png">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="style.css">
+  
+  <style>
+    /* CSS untuk dropdown */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+    }
+
+    .dropdown-content {
+      position: absolute;
+      background-color: black;
+      color: white;
+      min-width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      z-index: 1;
+    }
+
+    /* Efek hover untuk menampilkan detail */
+    .dropdown:hover .dropdown-content {
+      opacity: 1;
+      visibility: visible;
+    }
+  </style>
+</head>
+<script src="Asset/Proses.js"></script>
+<body onload="loadNavbar()">
+
+  <!-- Placeholder for Navbar -->
+  <div id="navbar-placeholder"></div><br><br>
+  <script type="module" src="Asset/load_navbar.js"></script>
+
+  <!-- <script>
+      // Function to load navbar content from an external file
+      function loadNavbar() {
+          const timestamp = new Date().getTime(); // Get current timestamp
+          fetch(`navbar1.html?t=${timestamp}`)
+              .then(response => {
+                  if (!response.ok) {
+                      throw new Error("Network response was not ok.");
+                  }
+                  return response.text();
+              })
+              .then(data => {
+                  document.getElementById("navbar-placeholder").innerHTML = data;
+              })
+              .catch(error => console.error("Failed to load navbar:", error));
+      }
+
+      // Define w3_open function
+      function w3_open() {
+          var sidebar = document.getElementById("mySidebar");
+          if (sidebar.style.display === "block") {
+              sidebar.style.display = "none";
+          } else {
+              sidebar.style.display = "block";
+          }
+      }
+  </script> -->
+
+  <!-- Judul -->
+  <div class="w3-container w3-grayscale-min" style="padding:50px 16px" id="staff">
+    <h3 class="w3-center">DAFTAR STAFF</h3>
+    <!-- <p class="w3-center w3-large">Data diambil secara otomatis dari API</p> -->
+    <div class="w3-row-padding w3-black" style="margin-top:64px" id="staff-container">
+      <!-- Card Staff akan dimasukkan di sini -->
+    </div>
+  </div>
+
+  <script>
+    // URL JSON yang diberikan
+    const API_URL = "https://webdevcdb.github.io/API_SERVER_303076/010000110100010001000010/Staff_data.json";
+
+    // Fungsi untuk mengambil data dari JSON dan menampilkannya
+    async function loadStaffData() {
+      try {
+        const response = await fetch(API_URL);
+        const staffData = await response.json();
+        const staffContainer = document.getElementById("staff-container");
+
+        // Pastikan data yang diterima adalah array
+        if (!Array.isArray(staffData)) {
+          console.error("Data bukan dalam format array!");
+          return;
+        }
+
+        // Hapus konten lama sebelum menambahkan yang baru
+        staffContainer.innerHTML = "";
+
+        // Loop melalui data dan buat card untuk setiap staff
+        staffData.forEach(staff => {
+          const staffCard = document.createElement("div");
+          staffCard.classList.add("w3-col", "l3", "m6", "w3-margin-bottom");
+
+          staffCard.innerHTML = `
+            <div class="w3-card w3-black">
+              <div class="w3-center">
+                <img src="${staff.avatarUrl || 'https://webdevcdb.github.io/API_SERVER_303076/010000110100010001000010/Foto/CDB.gif'}" 
+                     alt="${staff.username}" 
+                     style="width: 265px; height: 265px; border-radius: 50%;">
+              </div>
+              <div class="w3-container">
+                <div class="w3-center">
+                  <h3>${staff.username || 'Unknown'}</h3>
+                  <p class="w3-opacity">Nickname: ${staff.nickame || 'N/A'}</p>
+                  <p class="w3-opacity">Position: ${staff.position || 'N/A'}</p>
+                </div>
+                <div class="dropdown">
+                  <button class="w3-button w3-block">Detail</button>
+                  <div class="dropdown-content">
+                    <p>Username: ${staff.username || 'N/A'}</p>
+                    <p>Nickname: ${staff.nickame || 'N/A'}</p>
+                    <p>Position: ${staff.position || 'N/A'}</p>
+                    <p>Skill: ${staff.skill || 'N/A'}</p>
+                    <p>Country: ${staff.country || 'N/A'}</p>
+                    <p>Status: ${staff.status || 'N/A'}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+
+          staffContainer.appendChild(staffCard);
+        });
+
+      } catch (error) {
+        console.error("Gagal mengambil data staff:", error);
+      }
+    }
+
+    // Panggil fungsi saat halaman dimuat
+    document.addEventListener("DOMContentLoaded", loadStaffData);
+  </script>
+
+</body>
+</html>

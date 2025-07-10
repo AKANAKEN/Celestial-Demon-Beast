@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ambil Data dari Google Spreadsheet</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+        .card {
+            background-color: #222;
+            border-radius: 10px;
+            padding: 15px;
+            width: 250px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+        .back-button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px;
+    background-color: #444;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+    font-weight: bold;
+}
+
+.back-button:hover {
+    background-color: #666;
+}
+
+    </style>
+</head>
+<body>
+    <h2>Data dari Review Kalian</h2>
+   <a href="../../about.html" class="back-button">⬅ Back</a>
+    <div class="container" id="data-container"></div>
+
+  <script src="Rating2.js"></script>
+</body>
+</html>

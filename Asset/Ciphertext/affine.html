@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Affine Cipher Calculator</title>
+    <script src="js/affine.js" defer></script>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f5f5f5; text-align: center; padding: 20px; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); }
+        input, textarea, button { width: 90%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+        button { background-color: #fa7014; color: white; border: none; cursor: pointer; font-size: 16px; }
+        button:hover { background-color: #c25004; }
+        .radio-group { display: flex; justify-content: center; gap: 10px; margin: 10px 0; }
+        .result { font-size: 18px; font-weight: bold; color: #333; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Affine Cipher Calculator</h2>
+
+        <label for="text">Text:</label>
+        <textarea id="text" rows="3"></textarea>
+
+        <label for="a">Slope / A (Must be coprime with 26):</label><br>
+        <input type="number" id="a" min="1" value="5">
+
+        <label for="b">Intercept / B:</label><br>
+        <input type="number" id="b" min="0" value="8">
+
+        <div class="radio-group">
+            <label><input type="radio" name="mode" value="encrypt" checked> Encrypt</label>
+            <label><input type="radio" name="mode" value="decrypt"> Decrypt</label>
+        </div>
+
+        <button onclick="calculateCipher()">CALCULATE</button>
+
+        <div class="result">Result: <span id="result"></span></div>
+    </div>
+
+<!-- source code : https://cryptii.com/pipes/affine-cipher -->
+<!-- source code : https://planetcalc.com -->
+
+</body>
+</html>

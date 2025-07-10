@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Konsumsi Daya & Baterai Aki</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .container { max-width: 400px; margin: auto; }
+        input, button { margin: 5px; padding: 8px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Kalkulator Konsumsi Daya & Baterai Aki</h2>
+        <label>Daya Perangkat (Watt):</label>
+        <input type="number" id="daya" placeholder="Masukkan Watt">
+        <br>
+        <label>Lama Penggunaan (jam/hari):</label>
+        <input type="number" id="jam" placeholder="Masukkan Jam">
+        <br>
+        <label>Efisiensi Aki (%):</label>
+        <input type="number" id="efisiensi" placeholder="Masukkan Efisiensi" value="85">
+        <br>
+        <button onclick="hitungDaya()">Hitung</button>
+        <h3>Hasil:</h3>
+        <p id="hasil"></p>
+    </div>
+    
+    <script>
+        function hitungDaya() {
+            let daya = parseFloat(document.getElementById('daya').value);
+            let jam = parseFloat(document.getElementById('jam').value);
+            let efisiensi = parseFloat(document.getElementById('efisiensi').value) / 100;
+            
+            if (isNaN(daya) || isNaN(jam) || isNaN(efisiensi) || efisiensi <= 0 || efisiensi > 1) {
+                document.getElementById('hasil').innerText = "Masukkan angka yang valid!";
+                return;
+            }
+            
+            let konsumsiDaya = daya * jam; // Wh per hari
+            let kapasitasAki = (konsumsiDaya / (12 * efisiensi)).toFixed(2); // Ah untuk aki 12V
+            
+            document.getElementById('hasil').innerHTML =
+                `Konsumsi Daya Harian: <b>${konsumsiDaya} Wh</b><br>` +
+                `Kapasitas Aki yang Dibutuhkan: <b>${kapasitasAki} Ah (12V)</b>`;
+        }
+    </script>
+</body>
+</html>

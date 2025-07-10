@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subnet Calculator</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://akanaken.w3spaces.com/aktivity_style.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body { font-family: 'Raleway', sans-serif; text-align: center; }
+        .container { max-width: 600px; margin: auto; padding-top: 20px; }
+        table { margin: 20px auto; border-collapse: collapse; }
+        table, th, td { border: 1px solid black; padding: 10px; }
+    </style>
+</head>
+<body>
+    <div class="w3-container w3-card w3-padding w3-light-grey container">
+        <h2 class="w3-center">Subnet Calculator</h2>
+        <label>IP Address: <input type="text" id="ip" class="w3-input w3-border" value="192.168.1.10"></label>
+        <label>Subnet Mask: <input type="number" id="mask" class="w3-input w3-border" value="24" min="1" max="30"></label>
+        <button class="w3-button w3-blue w3-margin-top" onclick="calculateSubnet()">Hitung</button>
+        <table class="w3-table w3-bordered w3-white w3-margin-top">
+            <tr><th>Parameter</th><th>Nilai</th></tr>
+            <tr><td>Network</td><td id="network"></td></tr>
+            <tr><td>Netmask</td><td id="netmask"></td></tr>
+            <tr><td>Wildcard Mask</td><td id="wildcard"></td></tr>
+            <tr><td>Broadcast</td><td id="broadcast"></td></tr>
+            <tr><td>HostMin</td><td id="hostmin"></td></tr>
+            <tr><td>HostMax</td><td id="hostmax"></td></tr>
+            <tr><td>Hosts/Net</td><td id="hosts"></td></tr>
+            <tr><td>Class</td><td id="class"></td></tr>
+        </table>
+    </div>
+    <script>
+        function ipToArray(ip) {
+            return ip.split('.').map(num => parseInt(num, 10));
+        }
+
+        function arrayToIp(arr) {
+            return arr.join('.');
+        }
+
+        function getNetmask(prefix) {
+            let mask = Array(4).fill(0);
+            for (let i = 0; i < prefix; i++) {
+                mask[Math.floor(i / 8)] |= (1 << (7 - (i % 8)));
+            }
+            return mask;
+        }
+
+        function getClass(ip) {
+            let firstOctet = ip[0];
+            if (firstOctet >= 1 && firstOctet <= 126) return "A";
+            if (firstOctet >= 128 && firstOctet <= 191) return "B";
+            if (firstOctet >= 192 && firstOctet <= 223) return "C";
+            if (firstOctet >= 224 && firstOctet <= 239) return "D (Multicast)";
+            if (firstOctet >= 240 && firstOctet <= 255) return "E (Experimental)";
+            return "Unknown";
+        }
+
+        function calculateSubnet() {
+            let ip = ipToArray(document.getElementById("ip").value);
+            let prefix = parseInt(document.getElementById("mask").value);
+            let netmask = getNetmask(prefix);
+            let wildcardMask = netmask.map(octet => 255 - octet);
+            let network = ip.map((octet, i) => octet & netmask[i]);
+            let broadcast = ip.map((octet, i) => octet | wildcardMask[i]);
+            let hostMin = [...network];
+            hostMin[3] += 1;
+            let hostMax = [...broadcast];
+            hostMax[3] -= 1;
+            let totalHosts = Math.pow(2, 32 - prefix) - 2;
+            let ipClass = getClass(ip);
+            
+            document.getElementById("network").innerText = arrayToIp(network);
+            document.getElementById("netmask").innerText = arrayToIp(netmask);
+            document.getElementById("wildcard").innerText = arrayToIp(wildcardMask);
+            document.getElementById("broadcast").innerText = arrayToIp(broadcast);
+            document.getElementById("hostmin").innerText = arrayToIp(hostMin);
+            document.getElementById("hostmax").innerText = arrayToIp(hostMax);
+            document.getElementById("hosts").innerText = totalHosts;
+            document.getElementById("class").innerText = ipClass;
+        }
+
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                calculateSubnet();
+            }
+        });
+    </script>
+</body>
+</html>

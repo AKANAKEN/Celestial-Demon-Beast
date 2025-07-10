@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ambil Data dari Google Spreadsheet</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+        .card {
+            background-color: #222;
+            border-radius: 10px;
+            padding: 15px;
+            width: 250px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <h2>Data dari Google Spreadsheet</h2>
+    <div class="container" id="data-container"></div>
+
+    <script>
+        const spreadsheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTvXYo3h6WzXd-II8GiuRUeO4AeX3WO43rIV9AncovU-6i3RNTMxFFntrdI6nlHHtw1UKiB6kV-By9Z/pubhtml";
+        const selectedColumns = [0, 1, 2, 3]; // Indeks kolom yang ingin ditampilkan (mulai dari 0)
+
+        async function fetchSpreadsheet() {
+            try {
+                const response = await fetch(spreadsheetURL);
+                const text = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(text, "text/html");
+                const table = doc.querySelector("table");
+
+                if (!table) {
+                    console.error("Tabel tidak ditemukan!");
+                    return;
+                }
+
+                const dataContainer = document.getElementById("data-container");
+                const rows = table.querySelectorAll("tr");
+
+                rows.forEach((row, rowIndex) => {
+                    if (rowIndex < 2) return; // Sembunyikan 2 baris pertama
+                    let cells = row.querySelectorAll("td");
+                    let card = document.createElement("div");
+                    card.classList.add("card");
+
+                    selectedColumns.forEach(index => {
+                        if (cells[index]) {
+                            let p = document.createElement("p");
+                            p.innerHTML = cells[index].innerHTML;
+                            card.appendChild(p);
+                        }
+                    });
+                    dataContainer.appendChild(card);
+                });
+            } catch (error) {
+                console.error("Gagal mengambil data:", error);
+            }
+        }
+
+        fetchSpreadsheet();
+    </script>
+</body>
+</html>

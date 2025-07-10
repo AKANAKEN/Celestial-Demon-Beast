@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi Enigma</title>
+    <script src="js/enigma.js" defer></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        textarea { width: 80%; height: 100px; margin: 10px; }
+        button { padding: 10px 20px; margin: 10px; }
+    </style>
+</head>
+<body>
+    <h2>Simulasi Mesin Enigma</h2>
+    
+    <label for="model">Model Enigma:</label>
+    <select id="model">
+        <option value="M3">Enigma M3</option>
+        <option value="I">Enigma I</option>
+        <option value="M4">Enigma M4 "Shark"</option>
+        <option value="T">Enigma T "Tirpitz"</option>
+    </select>
+    <br>
+    
+    <label for="reflector">Reflector:</label>
+    <select id="reflector">
+        <option value="B">UKW B</option>
+        <option value="C">UKW C</option>
+    </select>
+    <br>
+    
+    <label>Rotor 1:</label>
+    <select id="rotor1">
+        <option value="I">I</option>
+        <option value="II">II</option>
+        <option value="III">III</option>
+    </select>
+    Position: <input type="text" id="position1" value="A" size="2">
+    Ring: <input type="text" id="ring1" value="A" size="2">
+    <br>
+    
+    <label>Rotor 2:</label>
+    <select id="rotor2">
+        <option value="I">I</option>
+        <option value="II">II</option>
+        <option value="III">III</option>
+    </select>
+    Position: <input type="text" id="position2" value="A" size="2">
+    Ring: <input type="text" id="ring2" value="A" size="2">
+    <br>
+    
+    <label>Rotor 3:</label>
+    <select id="rotor3">
+        <option value="I">I</option>
+        <option value="II">II</option>
+        <option value="III">III</option>
+    </select>
+    Position: <input type="text" id="position3" value="A" size="2">
+    Ring: <input type="text" id="ring3" value="A" size="2">
+    <br>
+    
+    <label for="plaintext">Plaintext:</label>
+    <textarea id="plaintext"></textarea>
+    <br>
+    <button onclick="encodeText()">Encode</button>
+    <button onclick="decodeText()">Decode</button>
+    <br>
+    <label for="ciphertext">Ciphertext:</label>
+    <textarea id="ciphertext" readonly></textarea>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cipher Encryptor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h2>Cipher Encryptor</h2>
+    <label for="cipher">Pilih Cipher:</label>
+    <select id="cipher">
+        <option value="vigenere">Vigenere Cipher</option>
+        <option value="playfair">Playfair Cipher</option>
+        <option value="enigma">Enigma Cipher</option>
+        <option value="affine">Affine Cipher</option>
+        <option value="hill">Hill Cipher</option>
+    </select>
+    <br><br>
+    <label for="inputText">Masukkan Teks:</label>
+    <input type="text" id="inputText">
+    <br><br>
+    <label for="key">Masukkan Kunci:</label>
+    <input type="text" id="key">
+    <br><br>
+    <button onclick="encrypt()">Enkripsi</button>
+    <br><br>
+    <label for="outputText">Hasil Enkripsi:</label>
+    <input type="text" id="outputText" readonly>
+    
+    <script src="script.js"></script>
+    <script src="js/vigenere.js"></script>
+    <script src="js/playfair.js"></script>
+    <script src="js/enigma.js"></script>
+    <script src="js/affine.js"></script>
+    <script src="js/hill.js"></script>
+</body>
+</html>

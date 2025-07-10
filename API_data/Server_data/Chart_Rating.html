@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donut Chart with Responsive Sizing</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* Buat kontainer dengan lebar 100% */
+    #chart-container {
+      width: 100%; /* Lebar penuh */
+      max-width: 600px; /* Batas maksimum (opsional) */
+      margin: 0 auto; /* Pusatkan chart */
+      position: relative; /* Untuk mendukung responsive canvas */
+    }
+
+    canvas {
+      display: block; /* Menghindari margin bawaan inline-block */
+      width: 100%; /* Lebar penuh */
+      height: auto; /* Tinggi proporsional */
+    }
+  </style>
+</head>
+<body>
+  <h2>Responsive Ratings Donut Chart</h2>
+  <div id="chart-container">
+    <canvas id="ratingsChart"></canvas>
+  </div>
+
+  <script>
+    // Fungsi untuk memuat JSON dari file eksternal
+    async function loadJSON() {
+      const response = await fetch('../Server_data.json');
+      // const response = await fetch('https://webdevcdb.github.io/API_SERVER_303076/010000110100010001000010/Server_data.json'); // File JSON
+      return await response.json();
+    }
+
+    // Membuat chart donat setelah memuat JSON
+    loadJSON().then(formResponses => {
+      // Menghitung jumlah masing-masing rating
+      const ratingCounts = {};
+      formResponses.forEach(response => {
+        const rating = response.rating;
+        if (ratingCounts[rating]) {
+          ratingCounts[rating]++;
+        } else {
+          ratingCounts[rating] = 1;
+        }
+      });
+
+      // Data untuk chart
+      const labels = Object.keys(ratingCounts); // Label (e.g., Star 5, Star 4)
+      const data = Object.values(ratingCounts); // Jumlah tiap rating
+
+      // Membuat chart menggunakan Chart.js
+      const ctx = document.getElementById('ratingsChart').getContext('2d');
+      const ratingsChart = new Chart(ctx, {
+        type: 'doughnut', // Jenis chart donat
+        data: {
+          labels: labels,
+          datasets: [{
+            data: data,
+            backgroundColor: [
+              'rgba(75, 192, 192, 0.6)',
+              'rgba(54, 162, 235, 0.6)',
+              'rgba(255, 206, 86, 0.6)',
+              'rgba(255, 99, 132, 0.6)'
+            ],
+            borderColor: [
+              'rgba(75, 192, 192, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(255, 99, 132, 1)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true, // Membuat chart responsif
+          maintainAspectRatio: true, // Tinggi akan disesuaikan proporsional
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top'
+            }
+          }
+        }
+      });
+    }).catch(error => console.error('Error loading JSON:', error));
+  </script>
+</body>
+</html>

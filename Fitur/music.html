@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Musik Latar Belakang</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #muteButton {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Musik Latar Belakang</h1>
+    <p>Musik akan diputar secara otomatis dan berulang.</p>
+    <button id="muteButton">Mute</button>
+
+    <!-- Elemen Audio -->
+    <audio id="backgroundMusic"></audio>
+
+
+    <script>
+        const musikFolder = "Music/";
+const daftarMusik = [
+    "1_alia_adelia.mp3",
+    "2_TSUNAMI.mp3",
+    "lagu3.mp3"
+];
+
+const audio = document.getElementById('backgroundMusic');
+const muteButton = document.getElementById('muteButton');
+
+let isMuted = false;
+let currentTrackIndex = 0;
+
+function playNextTrack() {
+    currentTrackIndex = (currentTrackIndex + 1) % daftarMusik.length;
+    audio.src = musikFolder + daftarMusik[currentTrackIndex];
+    audio.volume = 0.02; // Atur volume menjadi 20%
+    audio.play();
+}
+
+audio.addEventListener('ended', playNextTrack);
+
+audio.src = musikFolder + daftarMusik[currentTrackIndex];
+audio.volume = 0.02; // Atur volume menjadi 20%
+audio.play();
+
+muteButton.addEventListener('click', function() {
+    isMuted = !isMuted;
+    audio.muted = isMuted;
+    muteButton.textContent = isMuted ? "Unmute" : "Mute";
+});
+    </script>
+    <!-- <script src="script.js"></script> -->
+</body>
+</html>

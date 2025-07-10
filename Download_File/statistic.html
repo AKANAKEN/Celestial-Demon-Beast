@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard CasaOS</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="dashboard">
+        <header>
+            <h1>Dashboard</h1>
+        </header>
+        <section class="widgets">
+            <div class="widget" id="cpu">CPU: <span>0%</span></div>
+            <div class="widget" id="ram">RAM: <span>0%</span></div>
+            <div class="widget" id="disk">Disk: <span>0%</span></div>
+            <div class="widget" id="network">Network: <span>0 KB/s</span></div>
+        </section>
+        <section class="apps">
+            <button onclick="openApp('https://www.google.com/chrome/')">Chrome</button>
+            <button onclick="openApp('https://github.com')">GitHub</button>
+        </section>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

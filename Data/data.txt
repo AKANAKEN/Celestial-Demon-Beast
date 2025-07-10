@@ -1,0 +1,74 @@
+[
+  {
+    "Timestamp": "27/12/2024 08:10:22",
+    "Name": "Kelompok 9",
+    "Email": "kevin29.rpl3.2019@gmail.com",
+    "Phone": "0213010251",
+    "Message": "Contoh Message",
+    "Respon": "Ragu"
+  },
+  {
+    "Timestamp": "30/12/2024 21:28:12",
+    "Name": "Kelompok 9",
+    "Email": "iwakrin@gmail.com",
+    "Phone": "81282012692",
+    "Message": "tw",
+    "Respon": "Setuju"
+  },
+  {
+    "Timestamp": "30/12/2024 21:39:05",
+    "Name": "Kevin Mubarak",
+    "Email": "kevin29.rpl3.2019@gmail.com",
+    "Phone": "81282012692",
+    "Message": "semoga bisa 2",
+    "Respon": "Ragu"
+  },
+  {
+    "Timestamp": "30/12/2024 21:52:41",
+    "Name": "Kevin Mubarak",
+    "Email": "kevin29.rpl3.2019@gmail.com",
+    "Phone": "81282012692",
+    "Message": "Saya ingin tanya dong kalau website bagusnya pake apa ya?\nsoalnya saya gak ngerti",
+    "Respon": "Ragu"
+  },
+  {
+    "Timestamp": "30/12/2024 21:54:08",
+    "Name": "Kevin Mubarak",
+    "Email": "kevin29.rpl3.2019@gmail.com",
+    "Phone": "81282012692",
+    "Message": "sama satu lagi kan css dan js itu butuh kerangkanya yaitu html apakah bisa menggunakan tanpa html?",
+    "Respon": "Tidak setuju"
+  },
+  {
+    "Timestamp": "01/01/2025 20:14:00",
+    "Name": "Web WhatsApp",
+    "Email": "iwakrin@gmail.com",
+    "Phone": "81282012692",
+    "Message": "mana bukti nya",
+    "Respon": "Setuju"
+  },
+  {
+    "Timestamp": "01/01/2025 20:14:59",
+    "Name": "Web WhatsApp",
+    "Email": "kevin29.rpl3.2019@gmail.com",
+    "Phone": "1234565487",
+    "Message": "wahahaha di ulti mati co",
+    "Respon": "Belum"
+  },
+  {
+    "Timestamp": "02/01/2025 19:28:21",
+    "Name": "Git",
+    "Email": "kevin29.rpl3.2019@gmail.com",
+    "Phone": "81282012692",
+    "Message": "github test",
+    "Respon": "Ragu"
+  },
+  {
+    "Timestamp": "03/01/2025 19:18:35",
+    "Name": "Kevin Mubarak",
+    "Email": "iwakrinCDB-Official@gmail.com",
+    "Phone": "81282012692",
+    "Message": "Pesan sudah bisa digunakan",
+    "Respon": "Belum"
+  }
+]

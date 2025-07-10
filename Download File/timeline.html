@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timeline Generator</title>
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- HTML2PDF Library CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .timeline-container {
+            width: 100%;
+            overflow-x: auto;
+            padding-top: 20px;
+        }
+        .timeline-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .timeline-phase {
+            flex: 1 1 18%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 10px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .timeline-phase h2 {
+            font-size: 18px;
+            color: #333;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+        .timeline-event {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #eee;
+            border-radius: 5px;
+            position: relative;
+        }
+        .timeline-event:before {
+            content: "";
+            position: absolute;
+            left: -10px;
+            top: 10px;
+            width: 10px;
+            height: 10px;
+            background-color: #333;
+            border-radius: 50%;
+        }
+        .timeline-event span {
+            font-weight: bold;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Timeline Generator</h1>
+        <form id="timelineForm" class="mb-4">
+            <div class="form-group">
+                <label for="phase">Phase:</label>
+                <input type="text" class="form-control" id="phase" name="phase" required>
+            </div>
+            <div class="form-group">
+                <label for="event">Event:</label>
+                <input type="text" class="form-control" id="event" name="event" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="startDate">Start Date:</label>
+                    <input type="date" class="form-control" id="startDate" name="startDate" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="endDate">End Date:</label>
+                    <input type="date" class="form-control" id="endDate" name="endDate" required>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary btn-block" onclick="addEvent()">Add Event</button>
+        </form>
+        <button class="btn btn-success mb-4" onclick="printPDF()">Print PDF</button>
+        <div class="timeline-container">
+            <div class="timeline" id="timeline">
+                <!-- Timeline content will be added here dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        let phases = {};
+        let phaseCount = 0;
+
+        function addEvent() {
+            const phase = document.getElementById('phase').value;
+            const event = document.getElementById('event').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+
+            if (phase && event && startDate && endDate) {
+                if (!phases[phase]) {
+                    phases[phase] = [];
+                }
+
+                phases[phase].push({ event, startDate, endDate });
+                renderTimeline();
+
+                document.getElementById('timelineForm').reset();
+            } else {
+                alert('Please fill in all fields.');
+            }
+        }
+
+        function renderTimeline() {
+            const timeline = document.getElementById('timeline');
+            timeline.innerHTML = '';
+            phaseCount = 0;
+
+            let rowDiv = document.createElement('div');
+            rowDiv.classList.add('timeline-row');
+            timeline.appendChild(rowDiv);
+
+            for (const phase in phases) {
+                if (phaseCount % 4 === 0 && phaseCount !== 0) {
+                    rowDiv = document.createElement('div');
+                    rowDiv.classList.add('timeline-row');
+                    timeline.appendChild(rowDiv);
+                }
+
+                const phaseDiv = document.createElement('div');
+                phaseDiv.classList.add('timeline-phase');
+
+                const phaseTitle = document.createElement('h2');
+                phaseTitle.innerText = phase;
+                phaseDiv.appendChild(phaseTitle);
+
+                phases[phase].forEach(event => {
+                    const eventDiv = document.createElement('div');
+                    eventDiv.classList.add('timeline-event');
+                    eventDiv.innerHTML = `<span>${event.startDate} - ${event.endDate}</span><br>${event.event}`;
+                    phaseDiv.appendChild(eventDiv);
+                });
+
+                rowDiv.appendChild(phaseDiv);
+                phaseCount++;
+            }
+        }
+
+        function printPDF() {
+            const element = document.querySelector('.timeline-container');
+            html2pdf()
+                .from(element)
+                .set({
+                    margin: 1,
+                    filename: 'timeline.pdf',
+                    html2canvas: { scale: 2 },
+                    jsPDF: { orientation: 'landscape' }
+                })
+                .save();
+        }
+    </script>
+</body>
+</html>

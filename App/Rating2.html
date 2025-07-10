@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>About</title>
+  <link rel="icon" type="image/png" href="Asset/Logo [Dasar].png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Responsiveness for iframe */
+    .responsive-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      margin: 16px;
+    }
+
+    .responsive-iframe {
+  flex: 1 1 100%; /* Pastikan elemen mengambil lebar penuh */
+  max-width: 100%; /* Buat lebar maksimal 100% dari elemen induk */
+  height: 1000px; /* Pertahankan aspek rasio */
+  aspect-ratio: 16 / 9; /* Rasio aspek tetap */
+  border: none; /* Hilangkan border */
+  
+}
+
+
+    /* Adjust container padding for smaller screens */
+    .chart-container {
+  width: 100%;
+  max-width: 600px; /* Maksimum ukuran chart */
+  margin: auto;
+}
+
+.form-container {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.form-left {
+  flex: 1;
+  min-width: 250px;
+}
+
+.form-right {
+  flex: 1;
+  min-width: 250px;
+}
+
+@media (max-width: 600px) {
+  .form-container {
+    flex-direction: column;
+  }
+
+      .responsive-iframe {
+        height: 1000px; /* Adjust height for smaller screens */
+
+      }
+
+      * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #1e1e1e;
+            padding: 20px;
+            flex-direction: column;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 900px;
+        }
+        .form-container, .chart-container {
+            background: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            color: white;
+            width: 100%;
+            max-width: 600px;
+        }
+        .form-container form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .form-container input, 
+        .form-container textarea, 
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .form-container textarea {
+            height: 120px;
+            resize: none;
+        }
+        .rating-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            align-items: center;
+        }
+        .rating-container input[type="radio"] {
+            display: none;
+        }
+        .rating-container label {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            color: black;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+            font-size: 18px;
+        }
+        .rating-container input[type="radio"]:checked + label {
+            background: #33cc33;
+            color: white;
+        }
+        .submit-btn {
+            background: #33cc33;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .submit-btn:hover {
+            background: #2a992a;
+        }
+        .chart-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .form-container, .chart-container {
+                max-width: 100%;
+            }
+        }}
+  </style>
+
+  <script src="Asset/Proses.js"></script>
+</head>
+
+<body onload="loadNavbar()">
+
+
+  <!-- Placeholder for Navbar -->
+  <div id="navbar-placeholder"></div><br><br>
+  <script type="module" src="Asset/load_navbar.js"></script>
+
+ 
+</header>
+
+
+
+  <!-- Form Section -->
+   <!-- <div class="w3-container w3-light-grey" style="padding: 64px 16px;" id="forms">
+    <h3 class="w3-center">FORM INTRODUCTION</h3>
+
+     <div class="responsive-container"> -->
+       <!-- Embed Google Form  -->
+      <!-- <iframe 
+        class="responsive-iframe" 
+        src="https://docs.google.com/forms/d/e/1FAIpQLSe84LXZkYXM3hPlL2xdFTK5iFRNpUCRaQd35o4BuocyB0H7gA/viewform?embedded=true">
+      </iframe> -->
+
+      <!-- Embed Google Sheet -->
+      <!-- <iframe 
+        class="responsive-iframe" 
+        src="Data/Member.html">
+      </iframe>
+    </div>
+  </div>  -->
+
+
+
+  <!-- ======================================================================================= -->
+  <!-- Rating Section -->
+<br><br  id="review">
+<div class="container">
+    <!-- Form Review -->
+    <div class="form-container">
+        <form id="reviewForm">
+            <input type="text" id="username" placeholder="Your Name *">
+            <input type="email" id="email" placeholder="Your Email *">
+            <textarea id="review" placeholder="Your Message *"></textarea>
+            <div class="rating-container">
+                <span>Rating:</span>
+                <input type="radio" id="star5" name="rating" value="Star 5"><label for="star5">5</label>
+                <input type="radio" id="star4" name="rating" value="Star 4"><label for="star4">4</label>
+                <input type="radio" id="star3" name="rating" value="Star 3"><label for="star3">3</label>
+                <input type="radio" id="star2" name="rating" value="Star 2"><label for="star2">2</label>
+                <input type="radio" id="star1" name="rating" value="Star 1"><label for="star1">1</label>
+            </div>
+            <button type="button" class="submit-btn" onclick="submitReview()">Submit</button>
+        </form>
+    </div>
+      
+
+    <script>
+function submitReview() {
+  var username = document.getElementById("username").value;
+  var review = document.getElementById("review").value;
+  var email = document.getElementById("email").value;
+
+  // Ambil nilai rating yang dipilih
+  var rating = document.querySelector('input[name="rating"]:checked');
+  if (!rating) {
+    alert("Harap pilih rating!");
+    return;
+  }
+
+  var data = {
+    username: username,
+    rating: rating.value, // Ambil nilai dari radio button yang dipilih
+    review: review,
+    email: email
+  };
+
+        // URL Google Apps Script (pastikan ini benar)
+        var scriptURL = "https://script.google.com/macros/s/AKfycbz-GYGTYq1D-8XQDldHwg_2fZyKDW6FCQjbxvIDsaAaZ3CGmj4J4tEi7lRrvBxNp_IVlA/exec";
+
+        fetch(scriptURL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data),
+      mode: 'no-cors'  // Tambahkan ini untuk menghindari CORS
+    })
+    .then(() => {
+      alert("Review berhasil dikirim!");
+      document.getElementById("reviewForm").reset();
+    })
+    .catch(error => {
+      alert("Terjadi error: " + error.message);
+    });
+  
+
+      }
+    </script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  
+  <!-- =========================================================================== -->
+
+    <!-- Chart (4 bagian) -->
+    <div class="w3-col l4 m12 w3-padding">
+      <div class="w3-card w3-padding w3-round">
+        <h2 class="w3-center">Statistik Rating</h2>
+        <div style="width: 100%; height: 300px;">
+          <canvas id="ratingChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Tombol untuk Membuka Modal -->
+  <div class="w3-center w3-margin">
+    <button onclick="document.getElementById('reviewModal').style.display='block'" class="w3-button w3-blue w3-round">Tampilkan Review</button>
+  </div>
+</div>
+
+<!-- Modal (Popup) -->
+<div id="reviewModal" class="w3-modal">
+  <div class="w3-modal-content modal-content">
+    <span onclick="document.getElementById('reviewModal').style.display='none'" class="w3-button w3-display-topright close-btn">&times;</span>
+    <h2 class="w3-center">⭐ Review Pengguna ⭐</h2>
+    <div id="reviewContainer" class="w3-row-padding"></div>
+  </div>
+</div>
+
+<script>
+  async function fetchData() {
+    const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSNDGU3rWhw9Is_J8lSaI826RT_BTfB7DLfNNvfupyuAP5r9AdhH4PjRq-ZSq3jX5u_k2-eKCdQmsb3/pub?output=csv";
+    
+    try {
+      const response = await fetch(sheetURL);
+      const data = await response.text();
+      const rows = data.split("\n").map(row => row.split(","));
+      
+      generateChart(rows);
+      displayData(rows);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+
+  function generateChart(rows) {
+    let ratingCounts = { "Star 1": 0, "Star 2": 0, "Star 3": 0, "Star 4": 0, "Star 5": 0 };
+    let totalReviews = 0;
+
+    for (let i = 1; i < rows.length; i++) {
+      let rating = rows[i][2].trim(); // Kolom Rating
+
+      if (rating in ratingCounts) {
+        ratingCounts[rating]++;
+        totalReviews++;
+      }
+    }
+
+    let ratingPercentages = Object.values(ratingCounts).map(count => totalReviews ? (count / totalReviews) * 100 : 0);
+
+    let ctx = document.getElementById('ratingChart').getContext('2d');
+new Chart(ctx, {
+  type: 'doughnut',
+  data: {
+    labels: ["Star 1", "Star 2", "Star 3", "Star 4", "Star 5"],
+    datasets: [{
+      label: 'Persentase Rating (%)',
+      data: ratingPercentages,
+      backgroundColor: ['#ff4d4d', '#ff944d', '#ffd24d', '#b3ff4d', '#4dff4d'],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false, // Pastikan chart fleksibel terhadap container
+    plugins: {
+      legend: {
+        position: 'bottom'
+      }
+    }
+  }
+});
+
+  }
+
+  function displayData(rows) {
+    let container = document.getElementById("reviewContainer");
+    container.innerHTML = "";
+
+    for (let i = 1; i < rows.length; i++) {
+      let [timestamp, username, rating, review] = rows[i];
+
+      // Jika data tidak valid, skip
+      if (!username || !rating || !review) continue;
+
+      let stars = "⭐".repeat(parseInt(rating.replace("Star ", "")));
+
+      let cardHTML = `
+        <div class="w3-padding w3-margin-bottom w3-card w3-round">
+          <h4>${username}</h4>
+          <p class="rating">${stars}</p>
+          <p>"${review}"</p>
+        </div>
+      `;
+
+      container.innerHTML += cardHTML;
+    }
+  }
+
+  fetchData();
+</script>
+
+
+
+  <!-- =========================================================================== -->
+
+
+  <!-- <div class="w3-container w3-light-grey" style="padding: 64px 16px;" id="rating">
+    <h3 class="w3-center">FORM RATING</h3>
+    <a href="App/Rating.html">Rating</a> -->
+
+    <!-- <div class="responsive-container">
+      Embed Local Form -->
+      <!-- <iframe 
+        class="responsive-iframe" 
+        src="Data/Form_Rating.html">
+      </iframe> -->
+
+      <!-- Embed Local Chart -->
+      <!-- <iframe 
+  class="responsive-iframe" 
+  src="API_data/Server_data/Chart_Rating.html"
+  style="width: 50%; height: 800px;" allowfullscreen frameborder="0">
+</iframe> -->
+
+    </div>
+  </div>
+
+
+
+
+
+  <!-- <div class="w3-col l3 m6 w3-margin-bottom w3-xxlarge">
+      <div class="w3-card w3-black">
+        <div class="w3-center">
+       
+        </div>
+        <div class="w3-container">
+           <iframe class="w3-center" src="https://docs.google.com/forms/d/e/1FAIpQLSe84LXZkYXM3hPlL2xdFTK5iFRNpUCRaQd35o4BuocyB0H7gA/viewform?embedded=true" width="420" height="520" frameborder="0" marginheight="0" marginwidth="0">Memuat…</iframe>
+          <div class="w3-block">
+          <h3>DataBase User</h3>
+          <iframe class="w3-opacity w3-" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQuxoUT6Iu-8SaHbTZXIJV40bdHIEoVmpZrPeJ8sgzhlC7kUesw84fby5qmQJQ3HmdkWkbBYPba_Gya/pubhtml" width="420" height="520" frameborder="0" marginheight="0" marginwidth="0">Memuat…</iframe>
+
+          </div>
+        </div> -->
+
+<!-- Contact Section -->
+<div class="w3-container w3-light-grey" style="padding:128px 16px" id="contact">
+  <h3 class="w3-center">LINK COMMUNITY</h3>
+  <p class="w3-center w3-large">Let's go to community :</p>
+  <div style="margin-top:48px">
+    <h2> <b>Server Discord </b></h2>
+    <h5>  
+    <h4> Discord : </h4>
+     <p> <a href="https://discord.gg/VUwvgb2txH"> Pemberi Tau</a></p>
+     <p> <a href="https://discord.gg/8RGQ4J235E"> Futaki Empire </p>
+    
+    <h4><i> WhatsApp Group :</i></h4>
+      <p> <a href="https://chat.whatsapp.com/KOZqabfDQGD6b8dhjE2GjB"> Futaki Empire</a></p>
+    <p> <a href="podscord.empire@gmail.com"> <i class="fa fa-envelope fa-fw w3-xxlarge w3-margin-right"> </i> Email: podscord.empire@gmail.com</a></p>
+    <br>
+    </h5>
+    
+    <a class="w3-button w3-round-xxlarge w3-small w3-black w3-margin-bottom" href="https://forms.gle/3mkrGaBshVoJKNBi9" target="_blank">Pendapat</a>
+    
+  </div>
+</div>
+
+
+<!-- Footer. This section contains an ad for W3Schools Spaces. You can leave it to support us. -->
+<footer class="w3-center w3-black w3-padding-64">
+  <a href="#review" class="w3-button w3-light-grey"><i class="fa fa-arrow-up w3-margin-right"></i>To the top</a>
+  <div class="w3-xlarge w3-section">
+  </div>
+ <p class="w3-small">Website Ini bertujuan untuk Memperkenalkan Apa itu Comunitas <b><U> Pemberi Tau Empire</U></b></p>
+</footer>
+ 
+<!-- <script>
+// Modal Image Gallery
+function onClick(element) {
+  document.getElementById("img01").src = element.src;
+  document.getElementById("modal01").style.display = "block";
+  var captionText = document.getElementById("caption");
+  captionText.innerHTML = element.alt;
+}
+
+
+// Toggle between showing and hiding the sidebar when clicking the menu icon
+var mySidebar = document.getElementById("mySidebar");
+
+function w3_open() {
+  if (mySidebar.style.display === 'block') {
+    mySidebar.style.display = 'none';
+  } else {
+    mySidebar.style.display = 'block';
+  }
+}
+
+// Close the sidebar with the close button
+function w3_close() {
+    mySidebar.style.display = "none";
+}
+</script> -->
+
+</body>
+</html>

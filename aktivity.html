@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Activity</title>
+  <link rel="icon" type="image/png" href="Asset/Logo [Dasar].png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://akanaken.w3spaces.com/aktivity_style.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="Asset/Proses.js"></script>
+</head>
+
+<body onload="loadNavbar()">
+
+
+  <!-- Placeholder for Navbar -->
+  <div id="navbar-placeholder"></div><br><br>
+  <script type="module" src="Asset/load_navbar.js"></script>
+
+ 
+
+
+
+  <!-- About Section -->
+  <div class="w3-container w3-dark-grey" style="padding:128px 16px" id="Aktivity">
+    <h1 class="w3-center">Welcome to Activity Page</h1>
+    <!-- <h3 class="w3-center">DIGITAL & TRADITIONAL ART</h3>
+    <p class="w3-center w3-large">Digital Design</p> -->
+    <div class="w3-row-padding w3-center w3-black" style="margin-top:64px">
+
+
+      <!-- <embed src="Data/Jadwal Imsak, Buka Puasa, dan Waktu Shalat di KOTA JAKARTA Ramadhan 2025 - Kompas.com.pdf" type="application/pdf" width="100%" height="1200px" /> -->
+
+
+      <!-- <p> Pemberi Tau Empire adalah Sebuah Komunitas yang akan menghibur para member dengan kebagongan yang Hight Level.</p>
+          <p> Disclaimer : jika kalian bergabung maka kalian tidak akan normal dalam pikiran</p> -->
+
+      <!-- <script>
+        function myFunction() {
+          var dots = document.getElementById("dots");
+          var moreText = document.getElementById("more");
+          var btnText = document.getElementById("myBtn");
+
+          if (dots.style.display === "none") {
+            dots.style.display = "inline";
+            btnText.innerHTML = "Read more";
+            moreText.style.display = "none";
+          } else {
+            dots.style.display = "none";
+            btnText.innerHTML = "Read less";
+            moreText.style.display = "inline";
+          }
+        }
+      </script> -->
+    </div>
+  </div>
+
+
+  <!-- <h2 class="w3-center w3-black">Jadwal Imsak, Shalat dan Buka Puasa Bulan Ramadhan</h2>
+  <div class="w3-row-padding w3-dark-grey" style="margin-top:64px">
+      <div class="w3-container w3-dark-grey" style="padding:16px" id="Aktivity">
+          <div>
+            <iframe src="Data/jadwal-ramadhan-kab-bekasi-2025.html" width="100%" height="1200px">
+              <p>Browser Anda tidak mendukung tampilan PDF. <a href="Data/Jadwal Imsak, Buka Puasa, dan Waktu Shalat di KOTA JAKARTA Ramadhan 2025 - Kompas.com.pdf">Unduh PDF</a>.</p>
+          </iframe>
+          
+          
+          </div>
+      </div>
+  </div> -->
+  
+  <!-- <h2 class="w3-center w3-black">Event Countdown</h2>
+  <div class="w3-row-padding w3-dark-grey" style="margin-top:64px">
+      <div class="w3-container w3-dark-grey" style="padding:16px" id="Aktivity">
+          <div>
+              <iframe id="eventFrame" src="Asset/Event/Hari_raya_idul_fitri.html" frameborder="0" width="100%" style="height: 1300px;"></iframe>
+          </div>
+      </div>
+  </div> -->
+  
+  <script>
+      window.addEventListener("message", function(event) {
+          if (event.data.type === "resizeIframe") {
+              var iframe = document.getElementById("eventFrame");
+              if (iframe) {
+                  iframe.style.height = event.data.height + "px";
+              }
+          }
+      });
+  </script>
+  
+  
+
+
+    <!-- Event -->
+
+    <h2 class="w3-center w3-black">Library</h2>
+    <div class="w3-row-padding w3-dark-grey" style="margin-top:64px">
+        <div class="w3-container w3-dark-grey" style="padding:128px 16px" id="Aktivity">
+            <h1 class="w3-center">Book Reading</h1>
+            <h3 class="w3-center">Book Engine by Scribd</h3>
+            
+            <div>
+                <p><u><i><b>Desain Multimedia</b></i></u></p>
+                <button class="w3-button w3-blue" onclick="openModal('Desain Multimedia', 'https://www.scribd.com/embeds/346419464/content?start_page=1&view_mode=scroll&access_key=key-YqKETsd0Iy6HnVAmlAUC')">Buka</button>
+            </div>
+
+            <div>
+                <p><u><i><b>JOBSHEET DESAIN GRAFIS</b></i></u></p>
+                <button class="w3-button w3-blue" onclick="openModal('JOBSHEET DESAIN GRAFIS', 'https://www.scribd.com/embeds/278438533/content?start_page=1&view_mode=scroll&access_key=key-rsKtrdqntFYKsdPbSr9H')">Buka</button>
+            </div>
+
+            <div>
+                <p><u><i><b>Materi Multimedia</b></i></u></p>
+                <button class="w3-button w3-blue" onclick="openModal('Materi Multimedia', 'https://www.scribd.com/embeds/395035626/content?start_page=1&view_mode=scroll&access_key=key-H3yx1YzLehWAkOQGi2CO')">Buka</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal -->
+    <div id="modal" class="w3-modal">
+        <div class="w3-modal-content w3-animate-opacity w3-card-4" style="width:80%">
+            <header class="w3-container w3-blue">
+                <span onclick="document.getElementById('modal').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <h2 id="modal-title"></h2>
+            </header>
+            <div class="w3-container">
+                <iframe id="modal-iframe" width="100%" height="600" frameborder="0"></iframe>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function openModal(title, url) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-iframe').src = url;
+            document.getElementById('modal').style.display = 'block';
+        }
+    </script>
+  </div>
+
+
+
+
+
+  <!-- Modal for full size images on click-->
+  <!-- <div id="modal01" class="w3-modal w3-black" onclick="this.style.display='none'">
+  <span class="w3-button w3-xxlarge w3-black w3-padding-large w3-display-topright" title="Close Modal Image">×</span>
+  <div class="w3-modal-content w3-animate-zoom w3-center w3-transparent w3-padding-64">
+    <img id="img01" class="w3-image">
+    <p id="caption" class="w3-opacity w3-large"></p>
+  </div>
+</div> -->
+
+  <!-- Skills Section
+<div class="w3-container w3-light-grey w3-padding-64">
+  <div class="w3-row-padding">
+    <div class="w3-col m6">
+      <h3>Zan Nendatta</h3>
+      <p> Digital atau tradisional ART  <br>
+      Mayoritas Staff memiliki keahlian membuat ART Digital Atau Tradisional Art.</p>
+      
+      <p> Menghibur <br>
+      Kami akan Menghibur Para member dengan pembicaraan yang absurt dan random.</p>
+
+      <p> Share ilmu <br>
+      kami share beberapa ilmu sesuai jurusan yang dikuasai di server pemberitau.</p>
+
+
+    </div>
+    <div class="w3-col m6">
+      <p class="w3-wide"><i class="w3-margin-right"></i>Digital/tradisional Art</p>
+      <div class="w3-grey">
+        <div class="w3-container w3-dark-grey w3-center" style="width:90%">90%</div>
+      </div>
+      <p class="w3-wide"><i class="w3-margin-right"></i>Editing Video</p>
+      <div class="w3-grey">
+        <div class="w3-container w3-dark-grey w3-center" style="width:70%">70%</div>
+      </div>
+      <p class="w3-wide"><i class="w3-margin-right"></i>Penghibur</p>
+      <div class="w3-grey">
+        <div class="w3-container w3-dark-grey w3-center" style="width:95%">95%</div>
+      </div>
+      <p class="w3-wide"><i class="fa w3-margin-right"></i>Live 2D/3D Modeling</p>
+      <div class="w3-grey">
+        <div class="w3-container w3-dark-grey w3-center" style="width:20%">20%</div>
+      </div>
+    </div>
+  </div>
+</div>
+ -->
+
+
+
+
+  <!-- Footer. This section contains an ad for W3Schools Spaces. You can leave it to support us. -->
+  <footer class="w3-center w3-black w3-padding-64">
+    <a href="#Aktivity" class="w3-button w3-light-grey"><i class="fa fa-arrow-up w3-margin-right"></i>To the top</a>
+    <div class="w3-xlarge w3-section">
+    </div>
+    <p class="w3-small">Website Ini bertujuan untuk Memperkenalkan Apa itu komunitas <b><U> Pemberi Tau Empire</U></b>
+    </p>
+  </footer>
+
+
+
+</body>
+
+</html>

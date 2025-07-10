@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Statistik Rating</title>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
+  <style>
+    body {
+      font-family: "Raleway", sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
+    }
+
+    .w3-card {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .chart-container {
+      width: 60%;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="w3-container">
+    <h2 class="w3-center">📊 Statistik Rating</h2>
+
+    <!-- Chart Section -->
+    <div class="w3-card w3-padding w3-round w3-margin">
+      <h3 class="w3-center">Distribusi Rating (%)</h3>
+      <div class="chart-container">
+        <canvas id="ratingChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function fetchData() {
+      const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSNDGU3rWhw9Is_J8lSaI826RT_BTfB7DLfNNvfupyuAP5r9AdhH4PjRq-ZSq3jX5u_k2-eKCdQmsb3/pub?output=csv";
+      
+      try {
+        const response = await fetch(sheetURL);
+        const data = await response.text();
+        const rows = data.split("\n").map(row => row.split(","));
+
+        generateChart(rows);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    function generateChart(rows) {
+      let ratingCounts = { "Star 1": 0, "Star 2": 0, "Star 3": 0, "Star 4": 0, "Star 5": 0 };
+      let totalReviews = 0;
+
+      for (let i = 1; i < rows.length; i++) {
+        let rating = rows[i][2].trim(); // Kolom Rating
+
+        if (rating in ratingCounts) {
+          ratingCounts[rating]++;
+          totalReviews++;
+        }
+      }
+
+      let ratingPercentages = Object.values(ratingCounts).map(count => totalReviews ? (count / totalReviews) * 100 : 0);
+
+      let ctx = document.getElementById('ratingChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ["Star 1", "Star 2", "Star 3", "Star 4", "Star 5"],
+          datasets: [{
+            label: 'Persentase Rating (%)',
+            data: ratingPercentages,
+            backgroundColor: ['#ff4d4d', '#ff944d', '#ffd24d', '#b3ff4d', '#4dff4d'],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }
+      });
+    }
+
+    fetchData();
+  </script>
+
+</body>
+</html>

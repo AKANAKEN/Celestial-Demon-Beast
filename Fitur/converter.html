@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konversi PDF ke PNG</title>
+    <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
+    <script src="https://stuk.github.io/jszip/dist/jszip.min.js"></script>
+    <script src="https://stuk.github.io/jszip/vendor/FileSaver.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        canvas {
+            display: none;
+        }
+        #downloadZip {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        #downloadZip:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h2>Konversi PDF ke PNG</h2>
+    <input type="file" id="pdfUpload" accept="application/pdf" multiple>
+    <button id="downloadZip">Unduh Semua PNG</button>
+    <div id="output"></div>
+    
+    <script>
+        document.getElementById('pdfUpload').addEventListener('change', function(event) {
+            let files = event.target.files;
+            if (files.length === 0) return;
+            
+            let zip = new JSZip();
+            let totalFiles = files.length;
+            let processedFiles = 0;
+            
+            Array.from(files).forEach((file, fileIndex) => {
+                let reader = new FileReader();
+                reader.onload = function() {
+                    let loadingTask = pdfjsLib.getDocument({ data: new Uint8Array(reader.result) });
+                    loadingTask.promise.then(function(pdf) {
+                        let totalPages = pdf.numPages;
+                        let processedPages = 0;
+                        
+                        for (let i = 1; i <= totalPages; i++) {
+                            pdf.getPage(i).then(function(page) {
+                                let scale = 2;
+                                let viewport = page.getViewport({ scale: scale });
+                                let canvas = document.createElement('canvas');
+                                let context = canvas.getContext('2d');
+                                canvas.width = viewport.width;
+                                canvas.height = viewport.height;
+                                let renderContext = {
+                                    canvasContext: context,
+                                    viewport: viewport
+                                };
+                                page.render(renderContext).promise.then(() => {
+                                    let imgURL = canvas.toDataURL('image/png');
+                                    zip.file(`${file.name.replace('.pdf', '')}-page-${i}.png`, imgURL.split(',')[1], {base64: true});
+                                    processedPages++;
+                                    
+                                    if (processedPages === totalPages) {
+                                        processedFiles++;
+                                        if (processedFiles === totalFiles) {
+                                            document.getElementById('downloadZip').style.display = 'block';
+                                        }
+                                    }
+                                });
+                            });
+                        }
+                    });
+                };
+                reader.readAsArrayBuffer(file);
+            });
+        });
+        
+        document.getElementById('downloadZip').addEventListener('click', function() {
+            zip.generateAsync({type: "blob"}).then(function(content) {
+                saveAs(content, "pdf_images.zip");
+            });
+        });
+    </script>
+</body>
+</html>

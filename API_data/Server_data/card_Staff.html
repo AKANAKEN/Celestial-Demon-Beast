@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Card Grid</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style>
+        .card img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .details-panel {
+            display: none;
+            position: absolute;
+            background-color: #000;
+            color: #fff;
+            padding: 15px;
+            z-index: 10;
+            width: 90%; /* Adjust size as needed */
+            margin-top: 10px;
+        }
+
+        .details-container {
+            position: relative;
+        }
+
+        .card {
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+    <h2 class="w3-center">User Card Grid</h2>
+    <div class="w3-row-padding" id="dataGrid"></div>
+
+    <script>
+        // Fungsi untuk memuat data JSON dari file eksternal
+        async function loadJSON() {
+            const response = await fetch('../Staff_data.json'); // File JSON
+            return await response.json();
+        }
+
+        // Fungsi untuk membuat elemen kartu
+        function createCard(user) {
+            return `
+        
+        <div class="w3-col l3 m6 w3-margin-bottom">
+      <div class="w3-card w3-black">
+            <img src="${user.img}" alt="${user.username}" style="width:100%">
+            <div class="w3-container">
+              <h3>${user.username}</h3>
+              <p class="w3-opacity">${user.position}</p>
+              <p>Status: ${user.status}</p>
+
+              <div class="details-container">
+                <button class="w3-button w3-light-grey w3-block" onclick="toggleDetails(event, this)">Detail</button>
+                <div class="details-panel" onmouseleave="hideDetails(this)">
+                  <p>Nickname: ${user.nickname}</p>
+                  <p>Skill: ${user.skill}</p>
+                  <p>Country: ${user.country}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+        }
+
+        // Fungsi untuk menampilkan/menghilangkan panel detail
+        function toggleDetails(event, button) {
+            const panel = button.nextElementSibling;
+
+            // Menutup panel jika sudah terbuka
+            if (panel.style.display === "block") {
+                panel.style.display = "none";
+            } else {
+                // Menutup semua panel lain sebelum membuka panel ini
+                document.querySelectorAll('.details-panel').forEach(p => p.style.display = 'none');
+                panel.style.display = "block";
+            }
+
+            // Mencegah aksi default tombol atau link
+            event.preventDefault();
+        }
+
+        // Fungsi untuk menyembunyikan panel ketika kursor meninggalkan dropdown
+        function hideDetails(panel) {
+            panel.style.display = "none";
+        }
+
+        // Memuat data dan menampilkan kartu
+        loadJSON().then(users => {
+            const gridContainer = document.getElementById('dataGrid');
+            gridContainer.innerHTML = users.map(createCard).join('');
+        }).catch(error => console.error('Error loading JSON:', error));
+    </script>
+</body>
+
+</html>
+
+
+
+
+<!-- dibawah ini termasuk data yang belum terlalu digunakan -->
+<!-- <p>ID: ${user.id}</p>
+<p>Timestamp: ${user.timestamp}</p> -->

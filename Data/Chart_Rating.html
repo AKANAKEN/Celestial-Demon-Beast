@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulir Feedback dan Donut Chart</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" integrity="sha384-fv7T/u6Il3YpAEXdjipcX0vEOik2qCmAcyfJbLbTveROIuEb8i7IqvM8qgEY5MHi" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../Asset/styles.css">
+    <style>
+        .container-fluid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: stretch; /* Menyamakan tinggi elemen */
+            gap: 20px;
+        }
+    
+        .form-container,
+        .chart-container {
+            flex: 1;
+            min-width: 300px; /* Batas minimum agar responsif */
+            max-width: 400px;
+            background-color: #333;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+    
+        .chart-container {
+            max-width: 500px;
+        }
+    
+        form {
+            flex: 1; /* Memungkinkan form menyesuaikan tinggi */
+        }
+    
+        @media (max-width: 768px) {
+            .form-container, .chart-container {
+                width: 100%; /* Lebar penuh untuk layar kecil */
+            }
+        }
+    </style>
+    </head>
+    
+    <body>
+        <h1 class="text-center text-light">Formulir Feedback</h1>
+        <div class="container-fluid">
+            <!-- Formulir Feedback -->
+            <div class="form-container">
+                <h2 class="text-center mb-4 text-light">Berikan Feedback Anda</h2>
+                <form id="feedbackForm" class="text-light">
+                    <div class="form-group mb-3">
+                        <label for="timestamp" class="form-label">Waktu:</label>
+                        <input type="text" class="form-control text-center" id="timestamp" name="timestamp" readonly placeholder="Waktu otomatis">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="username" class="form-label">Nama Pengguna:</label>
+                        <input type="text" class="form-control" id="username" placeholder="Masukkan nama Anda ..." name="username" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="rating" class="form-label">Pilih Rating:</label>
+                        <select id="rating" class="form-select" name="rating" required>
+                            <option disabled selected>--- Pilih Rating ---</option>
+                            <option value="Star 1">⭐ Star 1</option>
+                            <option value="Star 2">⭐⭐ Star 2</option>
+                            <option value="Star 3">⭐⭐⭐ Star 3</option>
+                            <option value="Star 4">⭐⭐⭐⭐ Star 4</option>
+                            <option value="Star 5">⭐⭐⭐⭐⭐ Star 5</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="writeAReview" class="form-label">Ulasan:</label>
+                        <textarea id="writeAReview" class="form-control" placeholder="Tulis ulasan Anda ..." name="writeAReview" rows="3" required></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-lg w-100">Kirim Feedback</button>
+                    </div>
+                </form>
+            </div>
+    
+            <!-- Chart -->
+            <div class="chart-container">
+                <h2 class="text-center text-light mb-4">Chart Rating</h2>
+                <canvas id="ratingChart"></canvas>
+            </div>
+        </div>
+    </body>
+    
+    
+    
+    
+
+    <script>
+        // Function to generate the current timestamp
+        function generateTimestamp() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const date = `${day}/${month}/${year}`;
+            const time = now.toTimeString().split(' ')[0];
+            return `${date} ${time}`;
+        }
+
+        // Update the timestamp input field every second
+        function startRealtimeTimestamp() {
+            const timestampInput = document.getElementById('timestamp');
+            if (timestampInput) {
+                setInterval(() => {
+                    timestampInput.value = generateTimestamp();
+                }, 1000);
+            }
+        }
+
+        // Start updating timestamp on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            startRealtimeTimestamp();
+            fetchChartData();
+        });
+
+        // Submit form data to Sheety API
+        function submitForm() {
+            const form = document.getElementById('feedbackForm');
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            const jsonData = {
+                formResponses1: {
+                    ...data
+                }
+            };
+
+            fetch('https://api.sheety.co/4f50258db672da74f73e09f356a9384f/serverFutakiEmpire (jawaban)/formResponses1', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(jsonData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Data berhasil dikirim:', data);
+                    fetchChartData(); // Refresh chart after submission
+                })
+                .catch(error => {
+                    console.error('Terjadi kesalahan:', error);
+                });
+        }
+
+        document.getElementById('feedbackForm').addEventListener('submit', (event) => {
+            event.preventDefault();
+            submitForm();
+            document.getElementById('feedbackForm').reset();
+        });
+
+
+
+
+        // fungsi Chart
+        // Fetch data and render chart
+        function fetchChartData() {
+            const url = 'https://api.sheety.co/4f50258db672da74f73e09f356a9384f/serverFutakiEmpire (jawaban)/formResponses1';
+            fetch(url)
+                .then(response => response.json())
+                .then(json => {
+                    const ratings = json.formResponses1;
+                    const ratingCounts = {};
+
+                    // Count each rating
+                    ratings.forEach(rating => {
+                        const value = rating.rating;
+                        if (ratingCounts[value]) {
+                            ratingCounts[value]++;
+                        } else {
+                            ratingCounts[value] = 1;
+                        }
+                    });
+
+                    const totalRatings = ratings.length;
+                    const ratingLabels = Object.keys(ratingCounts);
+                    const ratingData = ratingLabels.map(rating => (ratingCounts[rating] / totalRatings) * 100);
+
+                    const ctx = document.getElementById('ratingChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ratingLabels,
+                            datasets: [{
+                                label: 'Presentase Rating',
+                                data: ratingData,
+                                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+                            }]
+                        },
+                        options: {
+                            cutout: '50%',
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                },
+                            }
+                        }
+                    });
+                });
+        }
+    </script>
+</body>
+
+</html>

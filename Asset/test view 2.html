@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review & Rating</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        canvas {
+            max-width: 400px;
+            margin: 20px auto;
+        }
+        table {
+            width: 80%;
+            margin: auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Data Review & Rating</h2>
+    <h3>Rata-rata Rating: <span id="avgRating">Loading...</span></h3>
+
+    <!-- Grafik Donat -->
+    <canvas id="ratingChart"></canvas>
+
+    <!-- Tabel Data -->
+    <table>
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>Username</th>
+                <th>Rating</th>
+                <th>Review</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody id="dataTable">
+            <tr><td colspan="5">Memuat data...</td></tr>
+        </tbody>
+    </table>
+
+    <script>
+        const apiUrl = "https://script.google.com/macros/s/AKfycbw7NJdloSPn87MVPe4dNd8CBgvOz60u479XMzNIiNy_P066GwFeN1eze3tMDiSFVgJv/exec";
+
+        function formatTimestamp(timestamp) {
+            const date = new Date(timestamp);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+            return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
+        }
+
+        async function fetchData() {
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                let tableBody = "";
+                let ratingCounts = { "Star 1": 0, "Star 2": 0, "Star 3": 0, "Star 4": 0, "Star 5": 0 }; // Untuk grafik
+                let totalRating = 0;
+                let totalEntries = data.length;
+
+                data.forEach(row => {
+                    let ratingText = row.Rating.trim(); // Pastikan tidak ada spasi ekstra
+                    if (ratingCounts[ratingText] !== undefined) {
+                        ratingCounts[ratingText]++;
+                    }
+
+                    // Konversi ke angka untuk rata-rata (misalnya "Star 1" = 1, "Star 5" = 5)
+                    let ratingNumber = parseInt(ratingText.replace("Star ", ""));
+                    totalRating += ratingNumber;
+
+                    tableBody += `
+                        <tr>
+                      <td>${formatTimestamp(row.Timestamp)}</td>
+                            <td>${row.Username}</td>
+                            <td>${row.Rating}</td>
+                            <td>${row.Review}</td>
+                            <td>${row["Email Address"]}</td>
+                        </tr>
+                    `;
+                });
+
+                document.getElementById("dataTable").innerHTML = tableBody;
+
+                // Hitung rata-rata rating
+                let avgRating = (totalRating / totalEntries).toFixed(2);
+                document.getElementById("avgRating").innerText = avgRating;
+
+                // Buat grafik donat
+                createChart(ratingCounts);
+
+            } catch (error) {
+                document.getElementById("dataTable").innerHTML = "<tr><td colspan='5'>Gagal memuat data.</td></tr>";
+                document.getElementById("avgRating").innerText = "Error";
+                console.error("Error fetching data:", error);
+            }
+        }
+
+        function createChart(ratingCounts) {
+            const ctx = document.getElementById('ratingChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ["Star 1", "Star 2", "Star 3", "Star 4", "Star 5"],
+                    datasets: [{
+                        label: 'Jumlah Rating',
+                        data: [
+                            ratingCounts["Star 1"],
+                            ratingCounts["Star 2"],
+                            ratingCounts["Star 3"],
+                            ratingCounts["Star 4"],
+                            ratingCounts["Star 5"]
+                        ],
+                        backgroundColor: ["#FF4C4C", "#FF9900", "#FFD700", "#90EE90", "#4CAF50"],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+        }
+
+        fetchData();
+    </script>
+
+</body>
+</html>

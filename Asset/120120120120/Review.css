@@ -1,0 +1,20 @@
+.content_review {
+    background-color: black;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+.container_review {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+.card2 {
+    background-color: #222;
+    border-radius: 10px;
+    padding: 15px;
+    width: 250px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
