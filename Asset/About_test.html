@@ -3,56 +3,571 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Review dan Rating</title>
-  <link rel="stylesheet" href="Asset/Style2.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Tambahkan Chart.js -->
-</head>
-<body>
-
-<div class="w3-container w3-margin-top">
-  <div class="w3-row-padding">
+  <title>Kalender Hari Penting Indonesia</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
     
-    <!-- Ringkasan Rating -->
-    <div class="w3-col l4 m12 w3-padding">
-      <div class="w3-card w3-padding w3-round w3-center">
-        <h3>⭐ Rata-rata Rating</h3>
-        <h1 id="averageRating" class="w3-xxlarge w3-text-blue">0.0</h1>
-        <p><span id="totalReviews">0</span> Review</p>
-      </div>
+    :root {
+      --primary: #1e3a8a;
+      --secondary: #3b82f6;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
+      min-height: 100vh;
+    }
+    
+    .hero-banner {
+      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+      border-radius: 0 0 30px 30px;
+      box-shadow: 0 10px 30px rgba(30, 58, 138, 0.3);
+    }
+    
+    .event-card {
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      transform: translateY(0);
+      border: 2px solid transparent;
+    }
+    
+    .event-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s ease;
+    }
+    
+    .overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .detail-card {
+      background: white;
+      border-radius: 20px;
+      max-width: 90%;
+      width: 700px;
+      max-height: 90vh;
+      overflow-y: auto;
+      transform: scale(0.9);
+      opacity: 0;
+      transition: all 0.4s ease;
+    }
+    
+    .overlay.active .detail-card {
+      transform: scale(1);
+      opacity: 1;
+    }
+    
+    .countdown-badge {
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    .progress-bar {
+      height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      transition: width 0.5s ease;
+    }
+    
+    .category-btn.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 6px rgba(30, 58, 138, 0.3);
+    }
+    
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 1001;
+    }
+    
+    .close-btn:hover {
+      transform: rotate(90deg);
+      background: #f8fafc;
+    }
+    
+    .today-badge {
+      background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+    }
+    
+    @media (max-width: 768px) {
+      .hero-banner {
+        border-radius: 0 0 20px 20px;
+      }
+      
+      .detail-card {
+        max-width: 95%;
+      }
+    }
+  </style>
+</head>
+<body class="text-gray-800">
+  <!-- Header -->
+  <header class="py-4 px-6 text-center">
+    <div class="max-w-6xl mx-auto">
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-800">Kalender Hari Penting Indonesia</h1>
+      <p class="text-gray-600 mt-2">Temukan dan pelajari tentang berbagai hari penting nasional</p>
     </div>
+  </header>
 
-    <!-- Statistik Rating -->
-    <div class="w3-col l4 m12 w3-padding">
-      <div class="w3-card w3-padding w3-round">
-        <h3 class="w3-center">Statistik Rating</h3>
-        <div style="width: 100%; height: 250px;">
-          <canvas id="ratingChart"></canvas>
+  <!-- Banner Hari Penting Hari Ini -->
+  <section class="hero-banner text-white py-8 px-6 mb-10">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center">
+      <div class="flex-1 text-center md:text-left">
+        <span class="today-badge px-4 py-1 rounded-full text-white text-sm font-bold inline-flex items-center">
+          <i class="fas fa-star mr-2"></i> Hari Penting Hari Ini
+        </span>
+        <h2 class="text-3xl md:text-4xl font-bold mt-4" id="todayTitle">Hari Kemerdekaan RI</h2>
+        <p class="text-xl opacity-90 mt-2" id="todayDate">17 Agustus 2025</p>
+        <p class="mt-4 max-w-2xl" id="todayDescription">Peringatan kemerdekaan Republik Indonesia yang ke-80. Mari kita lanjutkan perjuangan para pahlawan dengan mengisi kemerdekaan melalui karya dan prestasi.</p>
+        <button id="todayDetailBtn" class="mt-6 bg-white/20 hover:bg-white/30 border border-white/30 px-6 py-2 rounded-full transition-all">
+          Lihat Detail <i class="fas fa-arrow-right ml-2"></i>
+        </button>
+      </div>
+      <div class="mt-6 md:mt-0 flex justify-center">
+        <div class="bg-white/20 rounded-full w-32 h-32 flex items-center justify-center">
+          <span class="text-5xl" id="todayEmoji">🇮🇩</span>
         </div>
       </div>
     </div>
+  </section>
 
-    <!-- Tombol Aksi -->
-    <div class="w3-col l4 m12 w3-padding">
-      <div class="w3-card w3-padding w3-round w3-center" style="height: 100%;">
-        <h3 class="w3-center">Aksi</h3>
-        <button onclick="location.href='Asset/120120120120/Form.html'" class="w3-button w3-round-large w3-blue w3-hover-dark-blue w3-margin-bottom" style="width: 100%;">Form Review</button>
-        <button onclick="document.getElementById('reviewModal').style.display='block'" class="w3-button w3-round-large w3-blue w3-hover-dark-blue w3-margin-bottom" style="width: 100%;">Tampilkan Review</button>
+  <!-- Konten Utama -->
+  <div class="max-w-6xl mx-auto px-4 py-6">
+    <!-- Filter -->
+    <div class="flex flex-wrap gap-3 justify-center mb-8">
+      <button class="category-btn active px-4 py-2 bg-white rounded-full shadow text-sm font-medium transition-all" data-filter="all">
+        <i class="fas fa-star mr-2 text-yellow-500"></i> Semua
+      </button>
+      <button class="category-btn px-4 py-2 bg-white rounded-full shadow text-sm font-medium transition-all" data-filter="nasional">
+        <i class="fas fa-flag mr-2 text-red-500"></i> Nasional
+      </button>
+      <button class="category-btn px-4 py-2 bg-white rounded-full shadow text-sm font-medium transition-all" data-filter="keagamaan">
+        <i class="fas fa-praying-hands mr-2 text-purple-500"></i> Keagamaan
+      </button>
+      <button class="category-btn px-4 py-2 bg-white rounded-full shadow text-sm font-medium transition-all" data-filter="internasional">
+        <i class="fas fa-globe mr-2 text-green-500"></i> Internasional
+      </button>
+    </div>
+
+    <!-- Grid acara -->
+    <div id="eventGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Event cards akan diisi oleh JavaScript -->
+    </div>
+  </div>
+
+  <!-- Overlay Detail -->
+  <div class="overlay" id="detailOverlay">
+    <div class="close-btn" id="closeOverlay">
+      <i class="fas fa-times text-2xl text-gray-700"></i>
+    </div>
+    
+    <div class="detail-card">
+      <div class="p-6">
+        <div class="flex justify-between items-start">
+          <div>
+            <h2 class="text-2xl font-bold text-gray-800" id="detailTitle">Hari Kemerdekaan RI</h2>
+            <p class="text-lg text-blue-600 font-medium mt-1" id="detailDate">17 Agustus 2025</p>
+          </div>
+          <div class="text-4xl" id="detailEmoji">🇮🇩</div>
+        </div>
+        
+        <div class="mt-4 flex flex-wrap gap-4">
+          <div class="bg-blue-50 px-3 py-1 rounded-full text-blue-700 font-medium">
+            <i class="fas fa-calendar mr-2"></i> <span id="detailCategory">Nasional</span>
+          </div>
+          <div class="bg-yellow-50 px-3 py-1 rounded-full text-yellow-700 font-medium">
+            <i class="fas fa-clock mr-2"></i> <span id="detailCountdown">Hari Ini!</span>
+          </div>
+        </div>
+        
+        <div class="mt-6">
+          <h3 class="text-lg font-semibold text-gray-800">Deskripsi:</h3>
+          <p class="mt-2 text-gray-700 leading-relaxed" id="detailDescription">
+            Hari Kemerdekaan Republik Indonesia diperingati setiap tanggal 17 Agustus. Pada hari ini di tahun 1945, Soekarno dan Hatta memproklamasikan kemerdekaan Indonesia dari penjajahan.
+          </p>
+        </div>
+        
+        <div class="mt-8">
+          <h3 class="text-lg font-semibold text-gray-800 mb-2">Waktu Menuju Hari Penting:</h3>
+          <div class="progress-bar bg-gray-200 w-full">
+            <div class="progress-fill bg-blue-500" id="progressFill" style="width: 100%"></div>
+          </div>
+          <p class="text-sm text-gray-600 mt-2" id="progressText">Hari penting sedang berlangsung</p>
+        </div>
+        
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-gray-50 p-4 rounded-xl">
+            <h4 class="font-semibold text-gray-700 mb-2 flex items-center gap-2">
+              <i class="fas fa-lightbulb text-yellow-500"></i> Fakta Menarik
+            </h4>
+            <p class="text-gray-600" id="detailFact">
+              Upacara bendera pertama pada 17 Agustus 1945 diadakan di halaman rumah Soekarno di Jalan Pegangsaan Timur 56, Jakarta.
+            </p>
+          </div>
+          
+          <div class="bg-gray-50 p-4 rounded-xl">
+            <h4 class="font-semibold text-gray-700 mb-2 flex items-center gap-2">
+              <i class="fas fa-book text-green-500"></i> Sejarah Singkat
+            </h4>
+            <p class="text-gray-600" id="detailHistory">
+              Proklamasi kemerdekaan dibacakan oleh Soekarno dengan didampingi oleh Mohammad Hatta pada hari Jumat, 17 Agustus 1945, yang untuk tahun 1945 bertepatan dengan 17 Ramadan 1364 H.
+            </p>
+          </div>
+        </div>
+        
+        <div class="mt-8">
+          <h4 class="font-semibold text-gray-700 mb-2 flex items-center gap-2">
+            <i class="fas fa-calendar-check text-purple-500"></i> Aktivitas Umum
+          </h4>
+          <p class="text-gray-600" id="detailActivities">
+            Upacara bendera, perlombaan rakyat (panjat pinang, tarik tambang, dll), pameran budaya, dan berbagai acara kemerdekaan di seluruh Indonesia.
+          </p>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Modal (Popup Review) -->
-<div id="reviewModal" class="w3-modal">
-  <div class="w3-modal-content w3-animate-top modal-content w3-round-large" style="width: 80%; max-width: 600px;">
-    <span onclick="document.getElementById('reviewModal').style.display='none'" class="w3-button w3-display-topright close-btn">&times;</span>
-    <h2 class="w3-center">⭐ Review Pengguna ⭐</h2>
-    <div id="reviewContainer" class="w3-row-padding w3-padding w3-small" style="max-height: 400px; overflow-y: auto;"></div>
-  </div>
-</div>
+  <!-- Footer -->
+  <footer class="bg-white py-8 mt-12 border-t border-gray-200">
+    <div class="max-w-6xl mx-auto px-6 text-center text-gray-600">
+      <div class="flex justify-center gap-4 mb-4">
+        <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fab fa-facebook text-xl"></i></a>
+        <a href="#" class="text-gray-500 hover:text-pink-600"><i class="fab fa-instagram text-xl"></i></a>
+        <a href="#" class="text-gray-500 hover:text-blue-400"><i class="fab fa-twitter text-xl"></i></a>
+        <a href="#" class="text-gray-500 hover:text-green-600"><i class="fab fa-whatsapp text-xl"></i></a>
+      </div>
+      <p>© 2025 Kalender Hari Penting Indonesia. Data diambil dari berbagai sumber resmi.</p>
+      <p class="mt-2 text-sm">Halaman ini diperbarui secara otomatis setiap hari.</p>
+    </div>
+  </footer>
 
-<!-- Pastikan JavaScript Dimuat Setelah Elemen HTML -->
-<script src="about_proses.js"></script>
+  <script>
+    // Data hari penting dalam JSON
+    const eventsData = [
+      {
+        id: 1,
+        title: "Hari Kemerdekaan RI",
+        date: "2025-08-17",
+        emoji: "🇮🇩",
+        gradient: "from-red-500 to-red-400",
+        description: "Peringatan kemerdekaan Republik Indonesia yang ke-80. Mari kita lanjutkan perjuangan para pahlawan dengan mengisi kemerdekaan melalui karya dan prestasi.",
+        category: "nasional",
+        badge: "Hari Ini!",
+        fact: "Upacara bendera pertama pada 17 Agustus 1945 diadakan di halaman rumah Soekarno di Jalan Pegangsaan Timur 56, Jakarta.",
+        history: "Proklamasi kemerdekaan dibacakan oleh Soekarno dengan didampingi oleh Mohammad Hatta pada hari Jumat, 17 Agustus 1945, yang untuk tahun 1945 bertepatan dengan 17 Ramadan 1364 H.",
+        activities: "Upacara bendera, perlombaan rakyat (panjat pinang, tarik tambang, dll), pameran budaya, dan berbagai acara kemerdekaan di seluruh Indonesia."
+      },
+      {
+        id: 2,
+        title: "Hari Raya Idul Adha",
+        date: "2025-09-28",
+        emoji: "🕋",
+        gradient: "from-yellow-500 to-orange-400",
+        description: "Idul Adha adalah hari raya kurban yang dirayakan umat Islam setiap tahun. Pada hari ini, umat Islam melakukan shalat Id dan menyembelih hewan kurban sebagai bentuk ketaatan kepada Allah SWT.",
+        category: "keagamaan",
+        fact: "Idul Adha juga dikenal sebagai 'Hari Raya Haji' karena bertepatan dengan puncak ibadah haji di Mekkah.",
+        history: "Perayaan Idul Adha memperingati peristiwa pengorbanan Nabi Ibrahim yang bersedia mengorbankan putranya Ismail sebagai wujud ketaatan kepada Allah.",
+        activities: "Shalat Id, penyembelihan hewan kurban, pembagian daging kurban kepada yang membutuhkan, dan silaturahmi keluarga."
+      },
+      {
+        id: 3,
+        title: "Tahun Baru Masehi",
+        date: "2025-12-31",
+        emoji: "🎉",
+        gradient: "from-blue-500 to-purple-500",
+        description: "Perayaan pergantian tahun dari tahun 2025 ke 2026. Biasanya dirayakan dengan pesta kembang api dan berkumpul bersama keluarga.",
+        category: "internasional",
+        fact: "Tahun Baru pertama kali dirayakan sekitar 4000 tahun yang lalu di Babilonia kuno.",
+        history: "Penanggalan Masehi yang kita gunakan sekarang didasarkan pada kalender Gregorian yang diperkenalkan oleh Paus Gregorius XIII pada tahun 1582.",
+        activities: "Pesta kembang api, perayaan di pusat kota, makan malam bersama keluarga, dan resolusi tahun baru."
+      },
+      {
+        id: 4,
+        title: "Hari Raya Nyepi",
+        date: "2026-03-22",
+        emoji: "🕉️",
+        gradient: "from-purple-500 to-indigo-500",
+        description: "Hari Raya Nyepi adalah hari suci umat Hindu yang dirayakan setiap Tahun Baru Saka. Pada hari ini, umat Hindu melakukan amati geni (empat pantangan) yaitu tidak bekerja, tidak menyalakan api, tidak bepergian, dan tidak bersenang-senang.",
+        category: "keagamaan",
+        fact: "Di Bali, bandara internasional ditutup selama 24 jam pada hari Nyepi.",
+        history: "Nyepi berasal dari kata 'sepi' (sunyi, senyap). Perayaan Nyepi pertama kali dimulai pada tahun 78 Masehi ketika tahun Saka dimulai.",
+        activities: "Meditasi, refleksi diri, tidak menggunakan listrik, dan menjaga keheningan selama 24 jam."
+      },
+      {
+        id: 5,
+        title: "Hari Raya Idul Fitri",
+        date: "2026-04-21",
+        emoji: "🌙",
+        gradient: "from-green-500 to-emerald-500",
+        description: "Idul Fitri adalah hari raya umat Islam yang menandai berakhirnya bulan Ramadan. Pada hari ini, umat Islam saling memaafkan dan bersilaturahmi.",
+        category: "keagamaan",
+        fact: "Di Indonesia, Idul Fitri dikenal juga dengan nama Lebaran.",
+        history: "Perayaan Idul Fitri pertama kali dilakukan oleh Nabi Muhammad SAW pada tahun 624 M setelah kemenangan dalam Perang Badar.",
+        activities: "Shalat Id, mudik ke kampung halaman, halal bihalal (saling memaafkan), dan makan bersama keluarga."
+      },
+      {
+        id: 6,
+        title: "Hari Buruh Internasional",
+        date: "2025-05-01",
+        emoji: "👷",
+        gradient: "from-amber-500 to-orange-400",
+        description: "Hari Buruh atau May Day diperingati setiap tanggal 1 Mei untuk menghargai perjuangan dan hak-hak pekerja di seluruh dunia.",
+        category: "internasional",
+        fact: "Di Indonesia, Hari Buruh menjadi hari libur nasional sejak tahun 2014.",
+        history: "Hari Buruh bermula dari gerakan buruh di Amerika Serikat pada tahun 1886 yang menuntut jam kerja 8 jam sehari.",
+        activities: "Demonstrasi damai, seminar tentang hak pekerja, dan kampanye keselamatan kerja."
+      },
+      {
+        id: 7,
+        title: "Hari Pendidikan Nasional",
+        date: "2025-05-02",
+        emoji: "🎓",
+        gradient: "from-blue-400 to-indigo-500",
+        description: "Hari Pendidikan Nasional diperingati setiap tanggal 2 Mei, bertepatan dengan hari lahir Ki Hajar Dewantara, Bapak Pendidikan Indonesia.",
+        category: "nasional",
+        fact: "Ki Hajar Dewantara adalah pendiri Taman Siswa, lembaga pendidikan yang memberikan kesempatan bagi pribumi untuk memperoleh pendidikan.",
+        history: "Hardiknas ditetapkan melalui Keppres No. 316 Tahun 1959 tanggal 16 Desember 1959.",
+        activities: "Upacara bendera, lomba kreativitas siswa, seminar pendidikan, dan penghargaan kepada pendidik berprestasi."
+      },
+      {
+        id: 8,
+        title: "Hari Lahir Pancasila",
+        date: "2025-06-01",
+        emoji: "📜",
+        gradient: "from-red-500 to-yellow-400",
+        description: "Hari Lahir Pancasila diperingati setiap tanggal 1 Juni untuk memperingati pidato Soekarno yang pertama kali mengemukakan konsep Pancasila.",
+        category: "nasional",
+        fact: "Pancasila resmi menjadi dasar negara Indonesia pada tanggal 18 Agustus 1945.",
+        history: "Pidato Soekarno tentang Pancasila disampaikan dalam sidang BPUPKI pada tanggal 1 Juni 1945.",
+        activities: "Upacara kenegaraan, seminar kebangsaan, dan kegiatan pendidikan nilai-nilai Pancasila."
+      },
+      {
+        id: 9,
+        title: "Hari Natal",
+        date: "2025-12-25",
+        emoji: "🎄",
+        gradient: "from-green-600 to-red-500",
+        description: "Hari Natal diperingati oleh umat Kristiani di seluruh dunia untuk merayakan kelahiran Yesus Kristus.",
+        category: "keagamaan",
+        fact: "Di Indonesia, perayaan Natal biasanya diwarnai dengan misa natal dan pertukaran kado.",
+        history: "Perayaan Natal pertama kali dilakukan pada abad ke-4 Masehi.",
+        activities: "Misa Natal, pertukaran kado, dekorasi pohon Natal, dan makan malam bersama keluarga."
+      }
+    ];
 
+    // Tanggal hari ini
+    const today = new Date();
+    const todayStr = today.toISOString().split('T')[0];
+    
+    // Format tanggal Indonesia
+    function formatIndonesianDate(dateStr) {
+      const date = new Date(dateStr);
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      return date.toLocaleDateString('id-ID', options);
+    }
+    
+    // Hitung selisih hari
+    function daysUntil(dateStr) {
+      const eventDate = new Date(dateStr);
+      const diffTime = eventDate - today;
+      return Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+    }
+    
+    // Render events
+    function renderEvents(events) {
+      const eventGrid = document.getElementById('eventGrid');
+      eventGrid.innerHTML = '';
+      
+      events.forEach(event => {
+        const daysLeft = daysUntil(event.date);
+        const isToday = todayStr === event.date;
+        const isPast = daysLeft < 0;
+        
+        const eventCard = document.createElement('div');
+        eventCard.className = `event-card bg-gradient-to-br ${event.gradient} text-white p-6 rounded-xl relative overflow-hidden h-full flex flex-col`;
+        eventCard.dataset.id = event.id;
+        
+        eventCard.innerHTML = `
+          <div class="absolute top-4 right-4 text-white text-3xl">${event.emoji}</div>
+          <div class="flex-grow">
+            <h2 class="text-xl font-bold">${event.title}</h2>
+            <p class="text-sm opacity-90 mt-2">${formatIndonesianDate(event.date)}</p>
+            <div class="mt-4">
+              <p class="text-sm">${event.description.substring(0, 100)}...</p>
+            </div>
+          </div>
+          <div class="mt-6">
+            ${isToday ? 
+              `<span class="countdown-badge inline-block px-3 py-1 bg-white text-purple-600 text-xs font-bold rounded-full shadow">Hari Ini!</span>` : 
+              isPast ? 
+              `<span class="inline-block px-3 py-1 bg-black/20 text-white text-xs font-medium rounded-full">Sudah Berlalu</span>` :
+              `<span class="inline-block px-3 py-1 bg-white/30 text-white text-xs font-medium rounded-full">${daysLeft} Hari Lagi</span>`
+            }
+            <span class="inline-block ml-2 px-3 py-1 bg-black/20 text-white text-xs font-medium rounded-full">${event.category}</span>
+          </div>
+        `;
+        
+        eventGrid.appendChild(eventCard);
+      });
+      
+      // Add click event to cards
+      document.querySelectorAll('.event-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const id = card.dataset.id;
+          const event = eventsData.find(e => e.id == id);
+          showEventDetail(event);
+        });
+      });
+    }
+    
+    // Show event detail overlay
+    function showEventDetail(event) {
+      const overlay = document.getElementById('detailOverlay');
+      const daysLeft = daysUntil(event.date);
+      const isToday = todayStr === event.date;
+      const isPast = daysLeft < 0;
+      
+      // Update detail card content
+      document.getElementById('detailTitle').textContent = event.title;
+      document.getElementById('detailDate').textContent = formatIndonesianDate(event.date);
+      document.getElementById('detailCategory').textContent = event.category;
+      document.getElementById('detailDescription').textContent = event.description;
+      document.getElementById('detailFact').textContent = event.fact;
+      document.getElementById('detailHistory').textContent = event.history;
+      document.getElementById('detailActivities').textContent = event.activities;
+      document.getElementById('detailEmoji').textContent = event.emoji;
+      
+      // Update countdown badge
+      if (isToday) {
+        document.getElementById('detailCountdown').textContent = "Hari Ini!";
+        document.getElementById('progressFill').style.width = "100%";
+        document.getElementById('progressText').textContent = "Hari penting sedang berlangsung";
+      } else if (isPast) {
+        document.getElementById('detailCountdown').textContent = "Sudah Berlalu";
+        document.getElementById('progressFill').style.width = "100%";
+        document.getElementById('progressText').textContent = "Hari penting telah berlalu";
+      } else {
+        document.getElementById('detailCountdown').textContent = `${daysLeft} Hari Lagi`;
+        
+        // Calculate progress (max 30 days)
+        const progress = Math.min(100, Math.floor((1 - daysLeft/30) * 100));
+        document.getElementById('progressFill').style.width = `${progress}%`;
+        document.getElementById('progressText').textContent = `Menuju ${event.title}: ${daysLeft} hari lagi`;
+      }
+      
+      // Show overlay
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    
+    // Set today event in banner
+    function setTodayEvent() {
+      const todayEvent = eventsData.find(event => event.date === todayStr);
+      
+      if (todayEvent) {
+        document.getElementById('todayTitle').textContent = todayEvent.title;
+        document.getElementById('todayDate').textContent = formatIndonesianDate(todayEvent.date);
+        document.getElementById('todayDescription').textContent = todayEvent.description;
+        document.getElementById('todayEmoji').textContent = todayEvent.emoji;
+      } else {
+        document.getElementById('todayTitle').textContent = "Tidak Ada Hari Penting Hari Ini";
+        document.getElementById('todayDate').textContent = formatIndonesianDate(todayStr);
+        document.getElementById('todayDescription').textContent = "Tidak ada hari penting nasional atau keagamaan yang dirayakan hari ini.";
+        document.getElementById('todayEmoji').textContent = "📅";
+      }
+    }
+    
+    // Filter events
+    function filterEvents(category) {
+      if (category === 'all') {
+        renderEvents(eventsData);
+      } else {
+        const filteredEvents = eventsData.filter(event => event.category === category);
+        renderEvents(filteredEvents);
+      }
+    }
+    
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      // Set today event in banner
+      setTodayEvent();
+      
+      // Render all events
+      renderEvents(eventsData);
+      
+      // Filter buttons
+      document.querySelectorAll('.category-btn').forEach(button => {
+        button.addEventListener('click', () => {
+          // Remove active class from all buttons
+          document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.classList.remove('active');
+          });
+          
+          // Add active class to clicked button
+          button.classList.add('active');
+          
+          // Filter events
+          filterEvents(button.dataset.filter);
+        });
+      });
+      
+      // Today detail button
+      document.getElementById('todayDetailBtn').addEventListener('click', () => {
+        const todayEvent = eventsData.find(event => event.date === todayStr);
+        if (todayEvent) {
+          showEventDetail(todayEvent);
+        }
+      });
+      
+      // Close overlay button
+      document.getElementById('closeOverlay').addEventListener('click', () => {
+        const overlay = document.getElementById('detailOverlay');
+        overlay.classList.remove('active');
+        document.body.style.overflow = 'auto';
+      });
+    });
+  </script>
 </body>
 </html>
