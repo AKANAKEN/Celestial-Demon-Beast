@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OBS Live Chat CSS Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .chat-container {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            width: 100%;
+            max-width: 400px;
+            max-height: 600px;
+            overflow-y: auto;
+            padding: 5px;
+            background-color: transparent !important;
+            border-radius: 0;
+            box-shadow: none;
+        }
+        
+        .chat-message {
+            margin-bottom: 2px;
+            padding: 3px 5px;
+            border-radius: 0;
+            transition: none;
+            animation: none;
+            background-color: rgba(0,0,0,0.5) !important;
+        }
+        
+        .message-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2px;
+            padding: 0;
+            line-height: 1;
+        }
+        
+        .badge {
+            margin-right: 3px;
+            font-size: 10px;
+            padding: 1px 3px;
+            border-radius: 2px;
+            font-weight: bold;
+        }
+        
+        .username {
+            font-weight: bold;
+            margin-right: 3px;
+            font-size: 12px;
+        }
+        
+        .timestamp {
+            font-size: 9px;
+            opacity: 0.7;
+            margin-left: 3px;
+        }
+        
+        .message-content {
+            word-wrap: break-word;
+            line-height: 1.1;
+            padding: 0;
+            margin-top: 3px;
+            font-size: 12px;
+        }
+        
+        .emoji {
+            height: 20px;
+            vertical-align: middle;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .highlighted {
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 215, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+        }
+        
+        /* Custom scrollbar */
+        .chat-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .chat-container::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        
+        .chat-container::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        
+        .chat-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Custom CSS editor */
+        #customCssEditor {
+            font-family: 'Courier New', Courier, monospace;
+            min-height: 200px;
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto py-8 px-4">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-indigo-700">OBS Live Chat CSS Generator</h1>
+            <p class="text-gray-600 mt-2">Create beautiful chat overlays for your OBS Studio streams</p>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Configuration Panel -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Chat Style Configuration</h2>
+                
+                <div class="space-y-6">
+                    <!-- Container Settings -->
+                    <div class="border-b pb-4">
+                        <h3 class="text-lg font-medium text-gray-700 mb-3">Chat Container</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Background Color</label>
+                                <input type="color" id="containerBgColor" value="#ffffff" class="w-full h-10 rounded">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Opacity</label>
+                                <input type="range" id="containerOpacity" min="0" max="100" value="100" class="w-full">
+                                <span id="containerOpacityValue" class="text-xs text-gray-500">100%</span>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Border Radius</label>
+                                <input type="range" id="containerBorderRadius" min="0" max="20" value="10" class="w-full">
+                                <span id="containerBorderRadiusValue" class="text-xs text-gray-500">10px</span>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Padding</label>
+                                <input type="range" id="containerPadding" min="5" max="30" value="15" class="w-full">
+                                <span id="containerPaddingValue" class="text-xs text-gray-500">15px</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Message Settings -->
+                    <div class="border-b pb-4">
+                        <h3 class="text-lg font-medium text-gray-700 mb-3">Message Style</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Background Color</label>
+                                <input type="color" id="messageBgColor" value="#f3f4f6" class="w-full h-10 rounded">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Border Radius</label>
+                                <input type="range" id="messageBorderRadius" min="0" max="20" value="8" class="w-full">
+                                <span id="messageBorderRadiusValue" class="text-xs text-gray-500">8px</span>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Margin Bottom</label>
+                                <input type="range" id="messageMargin" min="0" max="20" value="12" class="w-full">
+                                <span id="messageMarginValue" class="text-xs text-gray-500">12px</span>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Padding</label>
+                                <input type="range" id="messagePadding" min="5" max="20" value="10" class="w-full">
+                                <span id="messagePaddingValue" class="text-xs text-gray-500">10px</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Username Settings -->
+                    <div class="border-b pb-4">
+                        <h3 class="text-lg font-medium text-gray-700 mb-3">Username Style</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Color</label>
+                                <input type="color" id="usernameColor" value="#1e40af" class="w-full h-10 rounded">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Font Weight</label>
+                                <select id="usernameFontWeight" class="w-full border rounded p-2">
+                                    <option value="normal">Normal</option>
+                                    <option value="bold" selected>Bold</option>
+                                    <option value="600">Semi-bold</option>
+                                    <option value="800">Extra bold</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Font Size</label>
+                                <input type="range" id="usernameFontSize" min="10" max="24" value="14" class="w-full">
+                                <span id="usernameFontSizeValue" class="text-xs text-gray-500">14px</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Message Content Settings -->
+                    <div class="border-b pb-4">
+                        <h3 class="text-lg font-medium text-gray-700 mb-3">Message Content</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Color</label>
+                                <input type="color" id="contentColor" value="#111827" class="w-full h-10 rounded">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Font Size</label>
+                                <input type="range" id="contentFontSize" min="10" max="24" value="14" class="w-full">
+                                <span id="contentFontSizeValue" class="text-xs text-gray-500">14px</span>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Line Height</label>
+                                <input type="range" id="contentLineHeight" min="1" max="2" step="0.1" value="1.4" class="w-full">
+                                <span id="contentLineHeightValue" class="text-xs text-gray-500">1.4</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Badge Settings -->
+                    <div class="border-b pb-4">
+                        <h3 class="text-lg font-medium text-gray-700 mb-3">Badges</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Moderator Color</label>
+                                <input type="color" id="modBadgeColor" value="#10b981" class="w-full h-10 rounded">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">VIP Color</label>
+                                <input type="color" id="vipBadgeColor" value="#8b5cf6" class="w-full h-10 rounded">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Subscriber Color</label>
+                                <input type="color" id="subBadgeColor" value="#f59e0b" class="w-full h-10 rounded">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Font Size</label>
+                                <input type="range" id="badgeFontSize" min="8" max="16" value="12" class="w-full">
+                                <span id="badgeFontSizeValue" class="text-xs text-gray-500">12px</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Animation Settings -->
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-700 mb-3">Animations</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Message Animation</label>
+                                <select id="messageAnimation" class="w-full border rounded p-2">
+                                    <option value="fade">Fade In</option>
+                                    <option value="slide">Slide Up</option>
+                                    <option value="none">None</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Highlight Duration (ms)</label>
+                                <input type="number" id="highlightDuration" value="5000" min="1000" max="10000" class="w-full border rounded p-2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Preview Panel -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold text-gray-800">Live Preview</h2>
+                    <button id="refreshPreview" class="text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+                
+                <div id="chatPreview" class="chat-container" style="width: 400px; height: 600px; background-color: transparent;">
+                    <div class="chat-message">
+                        <div class="message-header">
+                            <span class="badge" style="background-color: #10b981; color: white;">MOD</span>
+                            <span class="username" style="color: #1e40af; font-weight: bold;">StreamModerator</span>
+                            <span class="timestamp">12:34 PM</span>
+                        </div>
+                        <div class="message-content">Welcome everyone to today's stream!  😊</div>
+                    </div>
+                    
+                    <div class="chat-message">
+                        <div class="message-header">
+                            <span class="badge" style="background-color: #8b5cf6; color: white;">VIP</span>
+                            <span class="username" style="color: #1e40af; font-weight: bold;">LoyalViewer</span>
+                            <span class="timestamp">12:35 PM</span>
+                        </div>
+                        <div class="message-content">Excited for today's content! Let's go! </div>
+                    </div>
+                    
+                    <div class="chat-message">
+                        <div class="message-header">
+                            <span class="badge" style="background-color: #f59e0b; color: white;">SUB 12m</span>
+                            <span class="username" style="color: #1e40af; font-weight: bold;">SubscriberFan</span>
+                            <span class="timestamp">12:36 PM</span>
+                        </div>
+                        <div class="message-content">Just subscribed! Love your streams! ❤️</div>
+                    </div>
+                    
+                    <div class="chat-message">
+                        <div class="message-header">
+                            <span class="username" style="color: #1e40af; font-weight: bold;">NewViewer123</span>
+                            <span class="timestamp">12:37 PM</span>
+                        </div>
+                        <div class="message-content">First time watching, this is awesome!</div>
+                    </div>
+                    
+                    <div class="chat-message highlighted">
+                        <div class="message-header">
+                            <span class="badge" style="background-color: #10b981; color: white;">MOD</span>
+                            <span class="username" style="color: #1e40af; font-weight: bold;">StreamModerator</span>
+                            <span class="timestamp">12:38 PM</span>
+                        </div>
+                        <div class="message-content">Don't forget to follow for more great content! 🔔</div>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">Generated CSS</h3>
+                    <textarea id="generatedCss" class="w-full h-40 border rounded p-3 font-mono text-sm" readonly></textarea>
+                    <button id="copyCss" class="mt-2 bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition">
+                        <i class="fas fa-copy mr-2"></i> Copy CSS
+                    </button>
+                </div>
+                
+                <div class="mt-6">
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">Custom CSS (Advanced)</h3>
+                    <textarea id="customCssEditor" placeholder="Add your own custom CSS rules here..."></textarea>
+                    <button id="applyCustomCss" class="mt-2 bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition">
+                        <i class="fas fa-check mr-2"></i> Apply Custom CSS
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-8 bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">How to Use in OBS Studio</h2>
+            <ol class="list-decimal pl-5 space-y-2 text-gray-700">
+                <li>Copy the generated CSS above</li>
+                <li>In OBS Studio, add a "Browser Source" to your scene</li>
+                <li>Set the URL to your streaming platform's chat URL (Twitch, YouTube, etc.)</li>
+                <li>Check "Custom CSS" and paste the CSS code</li>
+                <li>Adjust width/height as needed (recommended width: 550px, height: 800px)</li>
+                <li>Click "OK" to apply</li>
+            </ol>
+            <div class="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded text-yellow-800">
+                <i class="fas fa-exclamation-circle mr-2"></i>
+                Note: Some platforms may require additional settings or browser extensions to properly style the chat.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const containerBgColor = document.getElementById('containerBgColor');
+        const containerOpacity = document.getElementById('containerOpacity');
+        const containerBorderRadius = document.getElementById('containerBorderRadius');
+        const containerPadding = document.getElementById('containerPadding');
+        const messageBgColor = document.getElementById('messageBgColor');
+        const messageBorderRadius = document.getElementById('messageBorderRadius');
+        const messageMargin = document.getElementById('messageMargin');
+        const messagePadding = document.getElementById('messagePadding');
+        const usernameColor = document.getElementById('usernameColor');
+        const usernameFontWeight = document.getElementById('usernameFontWeight');
+        const usernameFontSize = document.getElementById('usernameFontSize');
+        const contentColor = document.getElementById('contentColor');
+        const contentFontSize = document.getElementById('contentFontSize');
+        const contentLineHeight = document.getElementById('contentLineHeight');
+        const modBadgeColor = document.getElementById('modBadgeColor');
+        const vipBadgeColor = document.getElementById('vipBadgeColor');
+        const subBadgeColor = document.getElementById('subBadgeColor');
+        const badgeFontSize = document.getElementById('badgeFontSize');
+        const messageAnimation = document.getElementById('messageAnimation');
+        const highlightDuration = document.getElementById('highlightDuration');
+        const generatedCss = document.getElementById('generatedCss');
+        const copyCss = document.getElementById('copyCss');
+        const refreshPreview = document.getElementById('refreshPreview');
+        const customCssEditor = document.getElementById('customCssEditor');
+        const applyCustomCss = document.getElementById('applyCustomCss');
+        const chatPreview = document.getElementById('chatPreview');
+        
+        // Display value elements
+        const containerOpacityValue = document.getElementById('containerOpacityValue');
+        const containerBorderRadiusValue = document.getElementById('containerBorderRadiusValue');
+        const containerPaddingValue = document.getElementById('containerPaddingValue');
+        const messageBorderRadiusValue = document.getElementById('messageBorderRadiusValue');
+        const messageMarginValue = document.getElementById('messageMarginValue');
+        const messagePaddingValue = document.getElementById('messagePaddingValue');
+        const usernameFontSizeValue = document.getElementById('usernameFontSizeValue');
+        const contentFontSizeValue = document.getElementById('contentFontSizeValue');
+        const contentLineHeightValue = document.getElementById('contentLineHeightValue');
+        const badgeFontSizeValue = document.getElementById('badgeFontSizeValue');
+        
+        // Update display values
+        containerOpacity.addEventListener('input', () => {
+            containerOpacityValue.textContent = `${containerOpacity.value}%`;
+        });
+        
+        containerBorderRadius.addEventListener('input', () => {
+            containerBorderRadiusValue.textContent = `${containerBorderRadius.value}px`;
+        });
+        
+        containerPadding.addEventListener('input', () => {
+            containerPaddingValue.textContent = `${containerPadding.value}px`;
+        });
+        
+        messageBorderRadius.addEventListener('input', () => {
+            messageBorderRadiusValue.textContent = `${messageBorderRadius.value}px`;
+        });
+        
+        messageMargin.addEventListener('input', () => {
+            messageMarginValue.textContent = `${messageMargin.value}px`;
+        });
+        
+        messagePadding.addEventListener('input', () => {
+            messagePaddingValue.textContent = `${messagePadding.value}px`;
+        });
+        
+        usernameFontSize.addEventListener('input', () => {
+            usernameFontSizeValue.textContent = `${usernameFontSize.value}px`;
+        });
+        
+        contentFontSize.addEventListener('input', () => {
+            contentFontSizeValue.textContent = `${contentFontSize.value}px`;
+        });
+        
+        contentLineHeight.addEventListener('input', () => {
+            contentLineHeightValue.textContent = contentLineHeight.value;
+        });
+        
+        badgeFontSize.addEventListener('input', () => {
+            badgeFontSizeValue.textContent = `${badgeFontSize.value}px`;
+        });
+        
+        // Generate CSS
+        function generateCss() {
+            const opacityValue = parseInt(containerOpacity.value) / 100;
+            const containerBg = hexToRgba(containerBgColor.value, opacityValue);
+            
+            let css = `/* OBS Live Chat CSS - Generated by CSS Generator */
+/* Chat container base styles */
+.chat-container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    width: 100% !important;
+    max-width: 550px !important;
+    max-height: 800px !important;
+    overflow-y: auto !important;
+    padding: ${containerPadding.value}px !important;
+    background-color: ${containerBg} !important;
+    border-radius: ${containerBorderRadius.value}px !important;
+}
+
+/* Twitch container styles */
+.tw-chat,
+.tw-root--theme-dark .chat-room,
+.chat-room,
+.chat-list--default,
+.chat-scrollable-area__message-container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    width: 100% !important;
+    max-width: 550px !important;
+    max-height: 800px !important;
+    overflow-y: auto !important;
+    padding: ${containerPadding.value}px !important;
+    background-color: ${containerBg} !important;
+    border-radius: ${containerBorderRadius.value}px !important;
+    margin: 0 !important;
+}
+
+/* YouTube container styles */
+.yt-live-chat-renderer,
+.yt-live-chat-app,
+.yt-live-chat-item-list-renderer,
+#item-scroller.yt-live-chat-item-list-renderer {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    width: 100% !important;
+    max-width: 550px !important;
+    max-height: 800px !important;
+    overflow-y: auto !important;
+    padding: ${containerPadding.value}px !important;
+    background-color: ${containerBg} !important;
+    border-radius: ${containerBorderRadius.value}px !important;
+    margin: 0 !important;
+}
+
+/* Base message styles */
+.chat-message {
+    margin-bottom: ${messageMargin.value}px !important;
+    padding: ${messagePadding.value}px !important;
+    background-color: ${messageBgColor.value} !important;
+    border-radius: ${messageBorderRadius.value}px !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Twitch message styles */
+.tw-chat-message,
+.chat-line__message,
+.chat-line__message-container,
+.text-fragment {
+    margin-bottom: ${messageMargin.value}px !important;
+    padding: ${messagePadding.value}px !important;
+    background-color: ${messageBgColor.value} !important;
+    border-radius: ${messageBorderRadius.value}px !important;
+    transition: all 0.3s ease !important;
+}
+
+/* YouTube message styles */
+.yt-live-chat-text-message-renderer,
+.yt-live-chat-item-list-renderer,
+.yt-live-chat-text-message-renderer #content,
+.yt-live-chat-text-message-renderer #content > * {
+    margin-bottom: ${messageMargin.value}px !important;
+    padding: ${messagePadding.value}px !important;
+    background-color: ${messageBgColor.value} !important;
+    border-radius: ${messageBorderRadius.value}px !important;
+    transition: all 0.3s ease !important;
+`;
+
+            // Add animation based on selection
+            if (messageAnimation.value === 'fade') {
+                css += `    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+`;
+            } else if (messageAnimation.value === 'slide') {
+                css += `    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+`;
+            } else {
+                css += `}
+`;
+            }
+
+            css += `
+/* Header/meta styles */
+.message-header,
+.chat-line__message-header,
+.yt-live-chat-author-chip,
+.tw-chat-message-header {
+    display: block !important;
+    margin-bottom: 2px !important;
+}
+
+/* Badge styles */
+.badge,
+.chat-badge,
+.badge-alt,
+.yt-live-chat-author-badge-renderer,
+.chat-line__username-container .chat-badge {
+    margin-right: 5px !important;
+    font-size: ${badgeFontSize.value}px !important;
+    padding: 2px 5px !important;
+    border-radius: 4px !important;
+    font-weight: bold !important;
+}
+
+/* Base username styles */
+.username {
+    color: ${usernameColor.value} !important;
+    font-weight: ${usernameFontWeight.value} !important;
+    font-size: ${usernameFontSize.value}px !important;
+    display: block !important;
+    margin-bottom: 2px !important;
+}
+
+/* Twitch username styles */
+.chat-author__display-name,
+.chat-line__username,
+.user-name,
+.tw-chat-message-header .tw-strong {
+    color: ${usernameColor.value} !important;
+    font-weight: ${usernameFontWeight.value} !important;
+    font-size: ${usernameFontSize.value}px !important;
+    display: block !important;
+    margin-bottom: 2px !important;
+}
+
+/* YouTube username styles */
+.yt-live-chat-author-name-renderer,
+.yt-live-chat-author-chip,
+#author-name.yt-live-chat-author-chip {
+    color: ${usernameColor.value} !important;
+    font-weight: ${usernameFontWeight.value} !important;
+    font-size: ${usernameFontSize.value}px !important;
+    display: block !important;
+    margin-bottom: 2px !important;
+}
+
+/* Timestamp styles */
+.timestamp,
+.chat-line__timestamp,
+.yt-live-chat-timestamp-renderer {
+    font-size: 11px !important;
+    opacity: 0.7 !important;
+}
+
+/* Message content styles */
+.message-content,
+.chat-line__message-body,
+.yt-live-chat-text-message-renderer #message,
+.yt-live-chat-text-message-renderer #message span {
+    color: ${contentColor.value} !important;
+    font-size: ${contentFontSize.value}px !important;
+    line-height: ${contentLineHeight.value} !important;
+    word-wrap: break-word !important;
+    display: block !important;
+    margin-top: 5px !important;
+    padding-left: 5px !important;
+}
+
+.emoji {
+    height: 20px;
+    vertical-align: middle;
+}
+
+/* Badge colors for various platforms */
+.badge.mod,
+.chat-badge[title="Moderator"],
+.badge-alt[title="Moderator"],
+.yt-live-chat-author-badge-renderer[type="moderator"] {
+    background-color: ${modBadgeColor.value} !important;
+    color: ${getContrastColor(modBadgeColor.value)} !important;
+}
+
+.badge.vip,
+.chat-badge[title="VIP"],
+.badge-alt[title="VIP"] {
+    background-color: ${vipBadgeColor.value} !important;
+    color: ${getContrastColor(vipBadgeColor.value)} !important;
+}
+
+.badge.sub,
+.chat-badge[title*="Subscriber"],
+.badge-alt[title*="Subscriber"],
+.yt-live-chat-sponsor-chip {
+    background-color: ${subBadgeColor.value} !important;
+    color: ${getContrastColor(subBadgeColor.value)} !important;
+}
+
+/* Highlight animation */
+.highlighted {
+    animation: pulse ${highlightDuration.value / 1000}s;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(255, 215, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+}
+
+/* Custom scrollbar for various platforms */
+.chat-container::-webkit-scrollbar,
+.tw-chat::-webkit-scrollbar,
+.yt-live-chat-renderer::-webkit-scrollbar {
+    width: 6px !important;
+}
+
+.chat-container::-webkit-scrollbar-track,
+.tw-chat::-webkit-scrollbar-track,
+.yt-live-chat-renderer::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1) !important;
+    border-radius: 10px !important;
+}
+
+.chat-container::-webkit-scrollbar-thumb,
+.tw-chat::-webkit-scrollbar-thumb,
+.yt-live-chat-renderer::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-radius: 10px !important;
+}
+
+.chat-container::-webkit-scrollbar-thumb:hover,
+.tw-chat::-webkit-scrollbar-thumb:hover,
+.yt-live-chat-renderer::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Platform-specific overrides */
+/* Twitch fixes */
+.tw-root--theme-dark .chat-room,
+.tw-root--theme-dark .chat-list--default {
+    background-color: ${containerBg} !important;
+}
+
+.tw-chat,
+.chat-room,
+.chat-list--default {
+    border: none !important;
+    box-shadow: none !important;
+    background-color: transparent !important;
+}
+
+/* YouTube fixes */
+.yt-live-chat-app,
+.yt-live-chat-renderer,
+.yt-live-chat-item-list-renderer {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+#item-scroller.yt-live-chat-item-list-renderer {
+    background-color: transparent !important;
+}
+
+/* Force hide platform-specific elements */
+.yt-live-chat-header-renderer,
+.yt-live-chat-message-input-renderer,
+.yt-live-chat-ticker-renderer,
+.yt-live-chat-viewer-engagement-message-renderer,
+.tw-chat-header,
+.tw-chat-input {
+    display: none !important;
+}
+`;
+
+            // Add custom CSS if any
+            if (customCssEditor.value.trim()) {
+                css += `\n/* Custom CSS */\n${customCssEditor.value}`;
+            }
+
+            generatedCss.value = css;
+            return css;
+        }
+
+        // Apply CSS to preview
+        function applyCssToPreview() {
+            const styleElement = document.getElementById('previewStyle');
+            const css = generateCss();
+            
+            if (styleElement) {
+                styleElement.textContent = css;
+            } else {
+                const newStyleElement = document.createElement('style');
+                newStyleElement.id = 'previewStyle';
+                newStyleElement.textContent = css;
+                document.head.appendChild(newStyleElement);
+            }
+            
+            // Update preview elements with direct styles for better visualization
+            const containerBg = hexToRgba(containerBgColor.value, parseInt(containerOpacity.value) / 100);
+            chatPreview.style.backgroundColor = containerBg;
+            chatPreview.style.borderRadius = `${containerBorderRadius.value}px`;
+            chatPreview.style.padding = `${containerPadding.value}px`;
+            
+            const messages = chatPreview.querySelectorAll('.chat-message');
+            messages.forEach(message => {
+                message.style.backgroundColor = messageBgColor.value;
+                message.style.borderRadius = `${messageBorderRadius.value}px`;
+                message.style.marginBottom = `${messageMargin.value}px`;
+                message.style.padding = `${messagePadding.value}px`;
+                
+                // Update username
+                const username = message.querySelector('.username');
+                if (username) {
+                    username.style.color = usernameColor.value;
+                    username.style.fontWeight = usernameFontWeight.value;
+                    username.style.fontSize = `${usernameFontSize.value}px`;
+                }
+                
+                // Update message content
+                const content = message.querySelector('.message-content');
+                if (content) {
+                    content.style.color = contentColor.value;
+                    content.style.fontSize = `${contentFontSize.value}px`;
+                    content.style.lineHeight = contentLineHeight.value;
+                }
+                
+                // Update badges
+                const badges = message.querySelectorAll('.badge');
+                badges.forEach(badge => {
+                    badge.style.fontSize = `${badgeFontSize.value}px`;
+                    
+                    if (badge.textContent.includes('MOD')) {
+                        badge.style.backgroundColor = modBadgeColor.value;
+                        badge.style.color = getContrastColor(modBadgeColor.value);
+                    } else if (badge.textContent.includes('VIP')) {
+                        badge.style.backgroundColor = vipBadgeColor.value;
+                        badge.style.color = getContrastColor(vipBadgeColor.value);
+                    } else if (badge.textContent.includes('SUB')) {
+                        badge.style.backgroundColor = subBadgeColor.value;
+                        badge.style.color = getContrastColor(subBadgeColor.value);
+                    }
+                });
+            });
+        }
+
+        // Helper function to convert hex to rgba
+        function hexToRgba(hex, alpha) {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        }
+
+        // Helper function to determine contrast color (black or white)
+        function getContrastColor(hexColor) {
+            const r = parseInt(hexColor.slice(1, 3), 16);
+            const g = parseInt(hexColor.slice(3, 5), 16);
+            const b = parseInt(hexColor.slice(5, 7), 16);
+            const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+            return brightness > 128 ? '#000000' : '#ffffff';
+        }
+
+        // Event listeners for all controls
+        const controls = [
+            containerBgColor, containerOpacity, containerBorderRadius, containerPadding,
+            messageBgColor, messageBorderRadius, messageMargin, messagePadding,
+            usernameColor, usernameFontWeight, usernameFontSize,
+            contentColor, contentFontSize, contentLineHeight,
+            modBadgeColor, vipBadgeColor, subBadgeColor, badgeFontSize,
+            messageAnimation, highlightDuration
+        ];
+        
+        controls.forEach(control => {
+            control.addEventListener('input', applyCssToPreview);
+        });
+
+        // Copy CSS button
+        copyCss.addEventListener('click', () => {
+            generatedCss.select();
+            document.execCommand('copy');
+            
+            // Show feedback
+            const originalText = copyCss.innerHTML;
+            copyCss.innerHTML = '<i class="fas fa-check mr-2"></i> Copied!';
+            setTimeout(() => {
+                copyCss.innerHTML = originalText;
+            }, 2000);
+        });
+
+        // Refresh preview button
+        refreshPreview.addEventListener('click', () => {
+            // Add a new message to the preview
+            const newMessage = document.createElement('div');
+            newMessage.className = 'chat-message';
+            newMessage.innerHTML = `
+                <div class="message-header">
+                    <span class="username">NewUser${Math.floor(Math.random() * 1000)}</span>
+                    <span class="timestamp">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                </div>
+                <div class="message-content">This is a new test message!  123👋</div>
+            `;
+            
+            chatPreview.prepend(newMessage);
+            
+            // Apply animation
+            if (messageAnimation.value !== 'none') {
+                newMessage.style.opacity = '0';
+                setTimeout(() => {
+                    newMessage.style.opacity = '1';
+                }, 10);
+            }
+            
+            // Remove oldest message if more than 10
+            if (chatPreview.children.length > 10) {
+                chatPreview.removeChild(chatPreview.lastChild);
+            }
+            
+            // Highlight a random message
+            const messages = chatPreview.querySelectorAll('.chat-message');
+            messages.forEach(msg => msg.classList.remove('highlighted'));
+            const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+            randomMsg.classList.add('highlighted');
+        });
+
+        // Apply custom CSS
+        applyCustomCss.addEventListener('click', () => {
+            applyCssToPreview();
+            
+            // Show feedback
+            const originalText = applyCustomCss.innerHTML;
+            applyCustomCss.innerHTML = '<i class="fas fa-check mr-2"></i> Applied!';
+            setTimeout(() => {
+                applyCustomCss.innerHTML = originalText;
+            }, 2000);
+        });
+
+        // Initialize
+        applyCssToPreview();
+        
+        // Auto-refresh preview every 5 seconds
+        setInterval(() => {
+            refreshPreview.click();
+        }, 5000);
+    </script>
+</body>
+</html>

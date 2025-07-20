@@ -1,0 +1,39 @@
+
+[
+    {
+        "title": "Tailwind CSS",
+        "description": "Framework CSS utility-first yang memungkinkan Anda membangun desain custom langsung di markup.",
+        "url": "https://tailwindcss.com",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg"
+    },
+    {
+        "title": "GitHub",
+        "description": "Platform pengembangan perangkat lunak berbasis Git untuk kolaborasi dan version control.",
+        "url": "https://github.com",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg"
+    },
+    {
+        "title": "Stack Overflow",
+        "description": "Komunitas Q&A untuk programmer profesional dan enthusiast.",
+        "url": "https://stackoverflow.com",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Stack_Overflow_icon.svg"
+    },
+    {
+        "title": "Figma",
+        "description": "Alat desain berbasis web untuk antarmuka pengguna, pengalaman pengguna, dan prototyping.",
+        "url": "https://figma.com",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/3/33/Figma-logo.svg"
+    },
+    {
+        "title": "MDN Web Docs",
+        "description": "Sumber daya untuk pengembang web oleh pengembang web. Dokumentasi lengkap tentang teknologi web.",
+        "url": "https://developer.mozilla.org",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/1/10/MDN_Web_Docs_logo.svg"
+    },
+    {
+        "title": "Cloudflare",
+        "description": "Layanan jaringan dan keamanan untuk website, termasuk CDN, DNS, proteksi DDoS, dan lainnya.",
+        "url": "https://cloudflare.com",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/9/94/Cloudflare_Logo.png"
+    }
+]

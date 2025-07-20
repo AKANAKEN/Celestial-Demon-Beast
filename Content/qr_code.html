@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .color-preview {
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 8px;
+            border: 1px solid #e5e7eb;
+        }
+        #qrCodeContainer {
+            transition: all 0.3s ease;
+        }
+        .download-btn {
+            transition: transform 0.2s ease;
+        }
+        .download-btn:hover {
+            transform: translateY(-2px);
+        }
+        @media (max-width: 640px) {
+            .flex-col-mobile {
+                flex-direction: column;
+            }
+            .w-full-mobile {
+                width: 100% !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 min-h-screen text-gray-100">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <header class="text-center mb-10">
+            <h1 class="text-3xl md:text-4xl font-bold text-indigo-400 mb-2">QR Code Generator</h1>
+            <p class="text-gray-400">Created by : Celestial Demon Beast</p>
+        </header>
+
+        <div class="bg-gray-800 rounded-xl shadow-lg p-6 mb-8">
+            <div class="flex flex-col md:flex-row gap-8">
+                <!-- Input Section -->
+                <div class="w-full md:w-1/2">
+                    <div class="mb-6">
+                        <label for="urlInput" class="block text-sm font-medium text-gray-300 mb-2">
+                            <i class="fas fa-link mr-2 text-indigo-500"></i> Enter URL or Text
+                        </label>
+                        <input type="text" id="urlInput" placeholder="https://example.com" 
+                            class="w-full px-4 py-2 border border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-black text-gray-100">
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-300 mb-2">
+                            <i class="fas fa-palette mr-2 text-indigo-500"></i> Customize Colors
+                        </label>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="fgColor" class="block text-xs text-gray-500 mb-1">Foreground Color</label>
+                                <div class="flex items-center">
+                                    <input type="color" id="fgColor" value="#000000" 
+                                        class="w-10 h-10 border border-gray-600 rounded cursor-pointer bg-black">
+                                    <input type="text" id="fgColorText" value="#000000" 
+                                        class="ml-2 px-2 py-1 border border-gray-600 rounded text-sm w-24 bg-black text-gray-100">
+                                    <span class="color-preview" id="fgPreview" style="background-color: #000000;"></span>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label for="bgColor" class="block text-xs text-gray-500 mb-1">Background Color</label>
+                                <div class="flex items-center">
+                                    <input type="color" id="bgColor" value="#ffffff" 
+                                        class="w-10 h-10 border border-gray-300 rounded cursor-pointer">
+                                    <input type="text" id="bgColorText" value="#ffffff" 
+                                        class="ml-2 px-2 py-1 border border-gray-600 rounded text-sm w-24 bg-black text-gray-100">
+                                    <span class="color-preview" id="bgPreview" style="background-color: #ffffff;"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="qrSize" class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-expand mr-2 text-indigo-500"></i> QR Code Size
+                        </label>
+                        <select id="qrSize" class="w-full px-4 py-2 border border-gray-600 rounded-lg bg-black text-gray-100">
+                            <option value="200">Small (200x200)</option>
+                            <option value="300" selected>Medium (300x300)</option>
+                            <option value="400">Large (400x400)</option>
+                            <option value="500">Extra Large (500x500)</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="qrMargin" class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-border-all mr-2 text-indigo-500"></i> Margin Size
+                        </label>
+                        <select id="qrMargin" class="w-full px-4 py-2 border border-gray-600 rounded-lg bg-black text-gray-100">
+                            <option value="0">No margin</option>
+                            <option value="1" selected>Small margin</option>
+                            <option value="2">Medium margin</option>
+                            <option value="4">Large margin</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="nameTag" class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-tag mr-2 text-indigo-500"></i> Name Tag (Optional)
+                        </label>
+                        <input type="text" id="nameTag" placeholder="e.g. My QR Code" 
+                            class="w-full px-4 py-2 border border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-black text-gray-100">
+                    </div>
+
+                    <button id="generateBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-4 rounded-lg font-medium transition-colors duration-300">
+                        <i class="fas fa-qrcode mr-2"></i> Generate QR Code
+                    </button>
+                </div>
+
+                <!-- Output Section -->
+                <div class="w-full md:w-1/2 flex flex-col items-center justify-center">
+                    <div id="qrCodeContainer" class="mb-3 p-4 bg-gray-700 border border-gray-600 rounded-lg shadow-sm flex items-center justify-center">
+                        <p class="text-gray-400">Your QR code will appear here</p>
+                    </div>
+                    <div id="nameTagContainer" class="text-center mb-6 hidden">
+                        <p id="nameTagText" class="text-lg font-medium text-gray-100"></p>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-3 w-full justify-center">
+                        <button id="downloadPNG" class="download-btn flex-1 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg font-medium">
+                            <i class="fas fa-download mr-2"></i> PNG
+                        </button>
+                        <button id="downloadSVG" class="download-btn flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium">
+                            <i class="fas fa-download mr-2"></i> SVG
+                        </button>
+                        <button id="downloadJPG" class="download-btn flex-1 bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg font-medium">
+                            <i class="fas fa-download mr-2"></i> JPG
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-gray-800 rounded-xl shadow-lg p-6">
+            <h2 class="text-xl font-semibold text-gray-100 mb-4">
+                <i class="fas fa-lightbulb mr-2 text-yellow-500"></i> How to use
+            </h2>
+            <ol class="list-decimal pl-5 space-y-2 text-gray-300">
+                <li>Enter the URL or text you want to encode in the QR code</li>
+                <li>Customize the colors using the color pickers or by entering hex codes</li>
+                <li>Adjust the size and margin as needed</li>
+                <li>Click "Generate QR Code" to create your customized QR code</li>
+                <li>Download in your preferred format (PNG, SVG, or JPG)</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const urlInput = document.getElementById('urlInput');
+            const fgColor = document.getElementById('fgColor');
+            const bgColor = document.getElementById('bgColor');
+            const fgColorText = document.getElementById('fgColorText');
+            const bgColorText = document.getElementById('bgColorText');
+            const fgPreview = document.getElementById('fgPreview');
+            const bgPreview = document.getElementById('bgPreview');
+            const qrSize = document.getElementById('qrSize');
+            const qrMargin = document.getElementById('qrMargin');
+            const generateBtn = document.getElementById('generateBtn');
+            const qrCodeContainer = document.getElementById('qrCodeContainer');
+            const downloadPNG = document.getElementById('downloadPNG');
+            const downloadSVG = document.getElementById('downloadSVG');
+            const downloadJPG = document.getElementById('downloadJPG');
+            const nameTag = document.getElementById('nameTag');
+            const nameTagContainer = document.getElementById('nameTagContainer');
+            const nameTagText = document.getElementById('nameTagText');
+
+            // Color picker synchronization
+            fgColor.addEventListener('input', function() {
+                fgColorText.value = fgColor.value;
+                fgPreview.style.backgroundColor = fgColor.value;
+            });
+
+            bgColor.addEventListener('input', function() {
+                bgColorText.value = bgColor.value;
+                bgPreview.style.backgroundColor = bgColor.value;
+            });
+
+            fgColorText.addEventListener('input', function() {
+                if (/^#[0-9A-F]{6}$/i.test(fgColorText.value)) {
+                    fgColor.value = fgColorText.value;
+                    fgPreview.style.backgroundColor = fgColorText.value;
+                }
+            });
+
+            bgColorText.addEventListener('input', function() {
+                if (/^#[0-9A-F]{6}$/i.test(bgColorText.value)) {
+                    bgColor.value = bgColorText.value;
+                    bgPreview.style.backgroundColor = bgColorText.value;
+                }
+            });
+
+            // Generate QR Code
+            generateBtn.addEventListener('click', function() {
+                const url = urlInput.value.trim();
+                if (!url) {
+                    alert('Please enter a URL or text to generate QR code');
+                    return;
+                }
+
+                const options = {
+                    color: {
+                        dark: fgColor.value,
+                        light: bgColor.value
+                    },
+                    width: parseInt(qrSize.value),
+                    margin: parseInt(qrMargin.value),
+                    quality: 1
+                };
+
+                qrCodeContainer.innerHTML = '';
+                
+                // Handle name tag
+                if (nameTag.value.trim()) {
+                    nameTagText.textContent = nameTag.value.trim();
+                    nameTagContainer.classList.remove('hidden');
+                } else {
+                    nameTagContainer.classList.add('hidden');
+                }
+                
+                QRCode.toCanvas(url, options, function(err, canvas) {
+                    if (err) {
+                        console.error(err);
+                        qrCodeContainer.innerHTML = '<p class="text-red-500">Error generating QR code</p>';
+                        return;
+                    }
+                    
+                    canvas.id = 'qrCanvas';
+                    canvas.style.maxWidth = '100%';
+                    canvas.style.height = 'auto';
+                    qrCodeContainer.innerHTML = '';
+                    qrCodeContainer.appendChild(canvas);
+                });
+            });
+
+            // Download functions
+            downloadPNG.addEventListener('click', function() {
+                const canvas = document.querySelector('#qrCanvas');
+                if (!canvas) {
+                    alert('Please generate a QR code first');
+                    return;
+                }
+                
+                // Create a new canvas with name tag if exists
+                if (nameTag.value.trim()) {
+                    const combinedCanvas = document.createElement('canvas');
+                    const ctx = combinedCanvas.getContext('2d');
+                    const padding = 20;
+                    const textHeight = 30;
+                    
+                    combinedCanvas.width = canvas.width;
+                    combinedCanvas.height = canvas.height + (nameTag.value.trim() ? padding + textHeight : 0);
+                    
+                    // White background
+                    ctx.fillStyle = bgColor.value;
+                    ctx.fillRect(0, 0, combinedCanvas.width, combinedCanvas.height);
+                    
+                    // Draw QR code
+                    ctx.drawImage(canvas, 0, 0);
+                    
+                    // Draw name tag if exists
+                    if (nameTag.value.trim()) {
+                        ctx.font = `bold ${textHeight - 10}px Arial`;
+                        ctx.textAlign = 'center';
+                        ctx.fillStyle = fgColor.value;
+                        ctx.fillText(nameTag.value.trim(), combinedCanvas.width / 2, canvas.height + padding + textHeight - 10);
+                    }
+                    
+                    combinedCanvas.toBlob(function(blob) {
+                        saveAs(blob, `${nameTag.value.trim() || 'qr-code'}.png`);
+                    }, 'image/png', 1);
+                } else {
+                    canvas.toBlob(function(blob) {
+                        saveAs(blob, 'qr-code.png');
+                    }, 'image/png', 1);
+                }
+                });
+
+            downloadJPG.addEventListener('click', function() {
+                const canvas = document.querySelector('#qrCanvas');
+                if (!canvas) {
+                    alert('Please generate a QR code first');
+                    return;
+                }
+                
+                // Create a new canvas with name tag if exists
+                if (nameTag.value.trim()) {
+                    const combinedCanvas = document.createElement('canvas');
+                    const ctx = combinedCanvas.getContext('2d');
+                    const padding = 20;
+                    const textHeight = 30;
+                    
+                    combinedCanvas.width = canvas.width;
+                    combinedCanvas.height = canvas.height + (nameTag.value.trim() ? padding + textHeight : 0);
+                    
+                    // White background
+                    ctx.fillStyle = bgColor.value;
+                    ctx.fillRect(0, 0, combinedCanvas.width, combinedCanvas.height);
+                    
+                    // Draw QR code
+                    ctx.drawImage(canvas, 0, 0);
+                    
+                    // Draw name tag if exists
+                    if (nameTag.value.trim()) {
+                        ctx.font = `bold ${textHeight - 10}px Arial`;
+                        ctx.textAlign = 'center';
+                        ctx.fillStyle = fgColor.value;
+                        ctx.fillText(nameTag.value.trim(), combinedCanvas.width / 2, canvas.height + padding + textHeight - 10);
+                    }
+                    
+                    combinedCanvas.toBlob(function(blob) {
+                        saveAs(blob, `${nameTag.value.trim() || 'qr-code'}.jpg`);
+                    }, 'image/jpeg', 1);
+                } else {
+                    canvas.toBlob(function(blob) {
+                        saveAs(blob, 'qr-code.jpg');
+                    }, 'image/jpeg', 1);
+                }
+                });
+
+            downloadSVG.addEventListener('click', function() {
+                const url = urlInput.value.trim();
+                if (!url) {
+                    alert('Please generate a QR code first');
+                    return;
+                }
+
+                const options = {
+                    color: {
+                        dark: fgColor.value,
+                        light: bgColor.value
+                    },
+                    width: parseInt(qrSize.value),
+                    margin: parseInt(qrMargin.value),
+                    type: 'svg'
+                };
+
+                QRCode.toString(url, options, function(err, svg) {
+                    if (err) {
+                        console.error(err);
+                        return;
+                    }
+                    
+                    const blob = new Blob([svg], {type: 'image/svg+xml'});
+                    saveAs(blob, 'qr-code.svg');
+                });
+            });
+
+            // Generate QR code on Enter key press
+            urlInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    generateBtn.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
