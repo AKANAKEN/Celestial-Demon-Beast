@@ -22,4 +22,3 @@ Klik untuk melihat langsung: [Celestial Demon Beast](https://celestialdemonbeast
 - API (Real-time Data)
 - Guilded Integration *(if applicable)*
 
-## 📁 Struktur Direktori
